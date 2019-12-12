@@ -1,11 +1,38 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+
+#define circleRadius 10.f
+#define colDist 60.f
+#define rowDist 60.f
+
+
+
+using namespace sf;
+
+
+int loadBoard(RenderWindow &window){
+    CircleShape shape(circleRadius);
+    // load the first player's dots
+    for(int i = 0; i < 5; i++){
+        for(int j = 1; j < 5; j++){
+            shape.setPosition(j * (colDist + circleRadius * 2) - circleRadius * 2, i * rowDist);
+            window.draw(shape);
+        }
+    }
+    // load the second player's pieces
+    shape.setFillColor(Color::Red);
+    for(int i = 1; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            shape.setPosition( colDist / 2 - circleRadius + j * (colDist + circleRadius * 2), i * rowDist - rowDist / 2);
+            window.draw(shape);
+        }
+    }
+
+}
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
+    sf::RenderWindow window(sf::VideoMode(500, 500), "Bridg-It");
     while (window.isOpen())
     {
         sf::Event event;
@@ -16,9 +43,10 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        loadBoard(window);
         window.display();
     }
 
     return 0;
 }
+
