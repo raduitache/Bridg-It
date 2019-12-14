@@ -15,7 +15,7 @@ int loadBoard(RenderWindow &window){
     // load the first player's dots
     for(int i = 0; i < 5; i++){
         for(int j = 1; j < 5; j++){
-            shape.setPosition(j * (colDist + circleRadius * 2) - circleRadius * 2, i * rowDist);
+            shape.setPosition(j * colDist - colDist / 2, i * rowDist);
             window.draw(shape);
         }
     }
@@ -23,7 +23,7 @@ int loadBoard(RenderWindow &window){
     shape.setFillColor(Color::Red);
     for(int i = 1; i < 5; i++){
         for(int j = 0; j < 5; j++){
-            shape.setPosition( colDist / 2 - circleRadius + j * (colDist + circleRadius * 2), i * rowDist - rowDist / 2);
+            shape.setPosition(j * colDist, i * rowDist - rowDist / 2);
             window.draw(shape);
         }
     }
