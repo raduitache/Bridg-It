@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1576487964 source:d:\bridg-it\main.cpp
+	<SFML/Graphics.hpp>
+	<SFML/Window.hpp>
+	<iostream>
+
