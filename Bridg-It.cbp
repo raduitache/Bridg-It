@@ -32,6 +32,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="UI.cpp" />
+		<Unit filename="UI.hpp" />
+		<Unit filename="macros.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
