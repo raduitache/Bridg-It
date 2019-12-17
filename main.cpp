@@ -11,7 +11,11 @@ using namespace std;
 
 using namespace sf;
 
+<<<<<<< HEAD
 void loadGame(RenderWindow &window){
+=======
+void loadBoard(RenderWindow &window){
+>>>>>>> daniel
     CircleShape shape(circleRadius);
     // load the first player's dots
     for(int i = 0; i < boardSize; i++){
@@ -54,12 +58,17 @@ void StartGame()
 void Meniusetup(RenderWindow &meniu)
 {
 
+<<<<<<< HEAD
     Text Starttext,Scoretext,Exittext,Settingtext;
+=======
+    Text startText,startText,exitText,settingText,soundText;
+>>>>>>> daniel
     Font myfont;
     if(!myfont.loadFromFile("Roboto-Italic.ttf"))
     {
         cout<<"Errors font, can't loaded"<<endl;
     }
+<<<<<<< HEAD
     Starttext.setFont(myfont);
     Starttext.setString("Start");
     Starttext.setCharacterSize(80);
@@ -78,6 +87,38 @@ void Meniusetup(RenderWindow &meniu)
     Settingtext.setColor(Color(255,0,0));
     Settingtext.setPosition(150,100);
     /////////////////////////
+=======
+   startText.setFont(myfont);
+    startText.setString("Start");
+    startText.setCharacterSize(80);
+    startText.setColor(Color(255,0,0));
+    startText.setPosition(300,40);
+    //////////////////////////
+    startText.setFont(myfont);
+    startText.setString("Score");
+    startText.setCharacterSize(80);
+    startText.setColor(Color(255,0,0));
+    startText.setPosition(280,160);
+    ///////////////////////
+    settingText.setFont(myfont);
+    settingText.setString("Setting");
+    settingText.setCharacterSize(80);
+    settingText.setColor(Color(255,0,0));
+    settingText.setPosition(270,280);
+    /////////////////////////
+    exitText.setFont(myfont);
+    exitText.setString("Exit");
+    exitText.setCharacterSize(80);
+    exitText.setColor(Color(255,0,0));
+    exitText.setPosition(310,400);
+    /////////////////////////
+    soundText.setFont(myfont);
+    soundText.setString("Sound");
+    soundText.setCharacterSize(80);
+    soundText.setColor(Color(255,0,0));
+    soundText.setPosition(280,520);
+
+>>>>>>> daniel
     while(meniu.isOpen())
     {
         sf::Event event;
@@ -88,8 +129,16 @@ void Meniusetup(RenderWindow &meniu)
             meniu.close();
         }
         meniu.clear();
+<<<<<<< HEAD
         meniu.draw(Starttext);
         meniu.draw(Scoretext);
+=======
+        meniu.draw(startText);
+        meniu.draw(scoreText);
+        meniu.draw(settingText);
+        meniu.draw(exitText);
+        meniu.draw(soundText);
+>>>>>>> daniel
         meniu.display();
 
     }
@@ -110,6 +159,11 @@ int main()
        Meniusetup(meniu);
        centerscreen(meniu);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> daniel
     return 0;
 }
 
