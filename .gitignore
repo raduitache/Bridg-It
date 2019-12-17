@@ -1,4 +1,5 @@
 bin
 obj
 Bridg-It.depend
-Bridg-It.layout
+Bridg-It.layout*.dll
+*.dll
