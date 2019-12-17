@@ -11,11 +11,7 @@ using namespace std;
 
 using namespace sf;
 
-<<<<<<< HEAD
-void loadGame(RenderWindow &window){
-=======
 void loadBoard(RenderWindow &window){
->>>>>>> daniel
     CircleShape shape(circleRadius);
     // load the first player's dots
     for(int i = 0; i < boardSize; i++){
@@ -58,37 +54,13 @@ void StartGame()
 void Meniusetup(RenderWindow &meniu)
 {
 
-<<<<<<< HEAD
-    Text Starttext,Scoretext,Exittext,Settingtext;
-=======
-    Text startText,startText,exitText,settingText,soundText;
->>>>>>> daniel
+    Text startText, scoreText, exitText, settingText, soundText;
     Font myfont;
     if(!myfont.loadFromFile("Roboto-Italic.ttf"))
     {
         cout<<"Errors font, can't loaded"<<endl;
     }
-<<<<<<< HEAD
-    Starttext.setFont(myfont);
-    Starttext.setString("Start");
-    Starttext.setCharacterSize(80);
-    Starttext.setColor(Color(255,0,0));
-    Starttext.setPosition(10,80);
-    //////////////////////////
-    Scoretext.setFont(myfont);
-    Scoretext.setString("Score");
-    Scoretext.setCharacterSize(50);
-    Scoretext.setColor(Color(255,0,0));
-    Scoretext.setPosition(250,100);
-    ///////////////////////
-    Settingtext.setFont(myfont);
-    Settingtext.setString("Setting");
-    Settingtext.setCharacterSize(50);
-    Settingtext.setColor(Color(255,0,0));
-    Settingtext.setPosition(150,100);
-    /////////////////////////
-=======
-   startText.setFont(myfont);
+    startText.setFont(myfont);
     startText.setString("Start");
     startText.setCharacterSize(80);
     startText.setColor(Color(255,0,0));
@@ -118,7 +90,6 @@ void Meniusetup(RenderWindow &meniu)
     soundText.setColor(Color(255,0,0));
     soundText.setPosition(280,520);
 
->>>>>>> daniel
     while(meniu.isOpen())
     {
         sf::Event event;
@@ -129,16 +100,11 @@ void Meniusetup(RenderWindow &meniu)
             meniu.close();
         }
         meniu.clear();
-<<<<<<< HEAD
-        meniu.draw(Starttext);
-        meniu.draw(Scoretext);
-=======
         meniu.draw(startText);
         meniu.draw(scoreText);
         meniu.draw(settingText);
         meniu.draw(exitText);
         meniu.draw(soundText);
->>>>>>> daniel
         meniu.display();
 
     }
@@ -156,14 +122,8 @@ int main()
 
 
     sf::RenderWindow meniu(sf::VideoMode(800,700), "Bridg-It");
-       Meniusetup(meniu);
-       centerscreen(meniu);
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> daniel
+    Meniusetup(meniu);
+    centerscreen(meniu);
     return 0;
 }
 
