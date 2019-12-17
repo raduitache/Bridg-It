@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#define circleRadius 10.f
-#define colDist 60.f
-#define rowDist 60.f
+#define circleRadius 20.f
+#define colDist 100.f
+#define rowDist 100.f
+#define boardSize 8
 
 
 
@@ -13,17 +14,17 @@ using namespace sf;
 int loadBoard(RenderWindow &window){
     CircleShape shape(circleRadius);
     // load the first player's dots
-    for(int i = 0; i < 5; i++){
-        for(int j = 1; j < 5; j++){
-            shape.setPosition(j * (colDist + circleRadius * 2) - circleRadius * 2, i * rowDist);
+    for(int i = 0; i < boardSize; i++){
+        for(int j = 1; j < boardSize; j++){
+            shape.setPosition(j * colDist - colDist / 2, i * rowDist);
             window.draw(shape);
         }
     }
     // load the second player's pieces
     shape.setFillColor(Color::Red);
-    for(int i = 1; i < 5; i++){
-        for(int j = 0; j < 5; j++){
-            shape.setPosition( colDist / 2 - circleRadius + j * (colDist + circleRadius * 2), i * rowDist - rowDist / 2);
+    for(int i = 1; i < boardSize; i++){
+        for(int j = 0; j < boardSize; j++){
+            shape.setPosition(j * colDist, i * rowDist - rowDist / 2);
             window.draw(shape);
         }
     }
@@ -32,7 +33,7 @@ int loadBoard(RenderWindow &window){
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(500, 500), "Bridg-It");
+    sf::RenderWindow window(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
     while (window.isOpen())
     {
         sf::Event event;
