@@ -30,7 +30,7 @@ void Meniusetup(RenderWindow &meniu)
 
     Text startText, scoreText, exitText, settingText, soundText;
     Font myfont;
-    if(!myfont.loadFromFile("Roboto-Italic.ttf"))
+    if(!myfont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf"))
     {
         cout<<"Errors font, can't loaded"<<endl;
     }
