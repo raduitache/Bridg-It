@@ -51,10 +51,22 @@ void StartGame()
 
 }
 
+
 void Meniusetup(RenderWindow &meniu)
 {
 
-    Text startText,startText,exitText,settingText,soundText;
+   sf::Sprite sprite;
+   sf::Texture texture;
+    if(!texture.loadFromFile("Forma.jpg"))
+    {
+        cout<<"Eroare";
+    }
+    sprite.setTexture(texture);
+
+   sprite.setColor(sf::Color(255, 255, 204,128));
+   sprite.setPosition(sf::Vector2f(300,40));
+
+    Text startText,scoreText,exitText,settingText,soundText;
     Font myfont;
     if(!myfont.loadFromFile("Roboto-Italic.ttf"))
     {
@@ -66,11 +78,11 @@ void Meniusetup(RenderWindow &meniu)
     startText.setColor(Color(255,0,0));
     startText.setPosition(300,40);
     //////////////////////////
-    startText.setFont(myfont);
-    startText.setString("Score");
-    startText.setCharacterSize(80);
-    startText.setColor(Color(255,0,0));
-    startText.setPosition(280,160);
+    scoreText.setFont(myfont);
+    scoreText.setString("Score");
+    scoreText.setCharacterSize(80);
+    scoreText.setColor(Color(255,0,0));
+    scoreText.setPosition(280,160);
     ///////////////////////
     settingText.setFont(myfont);
     settingText.setString("Setting");
@@ -102,6 +114,7 @@ void Meniusetup(RenderWindow &meniu)
         meniu.clear();
         meniu.draw(startText);
         meniu.draw(scoreText);
+        meniu.draw(sprite);
         meniu.draw(settingText);
         meniu.draw(exitText);
         meniu.draw(soundText);
@@ -109,6 +122,8 @@ void Meniusetup(RenderWindow &meniu)
 
     }
 }
+
+
 
 void centerscreen(RenderWindow &window)
 {
@@ -122,8 +137,10 @@ int main()
 
 
     sf::RenderWindow meniu(sf::VideoMode(800,700), "Bridg-It");
+
+    centerscreen(meniu);
        Meniusetup(meniu);
-       centerscreen(meniu);
+
 
 
 
