@@ -1,4 +1,5 @@
 #include "Backend.hpp"
+#include "UI.hpp"
 #include <iostream>
 
 using namespace std;
@@ -33,6 +34,39 @@ void printBoard(){
     }
 }
 
+bool isClickValid(sf::Event::MouseButtonEvent mouse){
+    int x = int(mouse.x / (rowDist / 2));
+    int y = int(mouse.y / (colDist / 2));
+    cout << x << " " << y << endl;
+    if(board[x][y] == 'x' && playerRound == 0) return 1;
+    if(board[x][y] == 'y' && playerRound == 1) return 1;
+    return 0;
+}
+
+void linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2){
+    int x1 = int(click1.x / (rowDist / 2));
+    int y1 = int(click1.y / (colDist / 2));
+    int x2 = int(click2.x / (rowDist / 2));
+    int y2 = int(click2.y / (colDist / 2));
+    if(x1 == x2){
+        if(abs(y1 - y2) == 2){
+            if(board[x1][(y1 + y2) / 2] == '0'){
+                board[x1][(y1 + y2) / 2] = '0' + playerRound + 1;
+                playerRound = !playerRound;
+            }
+        }
+    }
+    if(y1 == y2){
+        if(abs(x1 - x2) == 2){
+            if(board[(x1 + x2) / 2][y1] == '0'){
+                board[(x1 + x2) / 2][y1] = '0' + playerRound + 1;
+                playerRound = !playerRound;
+            }
+        }
+    }
+    printBoard();
+}
+
 void createBoard(){
     board = new char*[2 * boardSize - 1];
     for(int i = 0; i < 2 * boardSize - 1; i++){
@@ -43,5 +77,27 @@ void createBoard(){
 }
 
 void linkDots(sf::Event::MouseButtonEvent mouse){
+    if(isClickValid(mouse)){
+            // wait for the second click:
+        while (window.isOpen())
+        {
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                    window.close();
+                if (event.type == sf::Event::MouseButtonPressed){
+                    if(event.mouseButton.button == sf::Mouse::Left){
+                        linkIfValid(mouse, event.mouseButton);
+                        return;
+                    }
+                }
+            }
+
+            window.clear();
+            loadBoard(window);
+            window.display();
+        }
+    }
 
 }

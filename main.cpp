@@ -36,6 +36,7 @@ void StartGame()
 int main()
 {
     boardSize = 8;
+    createBoard();
     StartGame();
     //sf::RenderWindow meniu(sf::VideoMode(800,700), "Bridg-It");
     //Meniusetup(meniu);

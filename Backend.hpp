@@ -4,4 +4,4 @@
 
 void createBoard();
 
-void linkDots(sf::Event::MouseButtonEvent mouse);
+void linkDots(sf::Event::MouseButtonEvent click1);
