@@ -1,3 +1,7 @@
+#include <SFML/Window.hpp>
 #include "macros.hpp"
+#include "globalVars.hpp"
 
-void createBoard(int n);
+void createBoard();
+
+void linkDots(sf::Event::MouseButtonEvent mouse);

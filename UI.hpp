@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 #include "macros.hpp"
+#include "globalVars.hpp"
 
 using namespace sf;
 using namespace std;
