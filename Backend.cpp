@@ -38,8 +38,8 @@ bool isClickValid(sf::Event::MouseButtonEvent mouse){
     int x = int(mouse.x / (rowDist / 2));
     int y = int(mouse.y / (colDist / 2));
     cout << x << " " << y << endl;
-    if(board[x][y] == 'x' && playerRound == 0) return 1;
-    if(board[x][y] == 'y' && playerRound == 1) return 1;
+    if(board[y][x] == 'x' && playerRound == 0) return 1;
+    if(board[y][x] == 'y' && playerRound == 1) return 1;
     return 0;
 }
 
@@ -50,16 +50,16 @@ void linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent
     int y2 = int(click2.y / (colDist / 2));
     if(x1 == x2){
         if(abs(y1 - y2) == 2){
-            if(board[x1][(y1 + y2) / 2] == '0'){
-                board[x1][(y1 + y2) / 2] = '0' + playerRound + 1;
+            if(board[(y1 + y2) / 2][x1] == '0'){
+                board[(y1 + y2) / 2][x1] = '0' + playerRound + 1;
                 playerRound = !playerRound;
             }
         }
     }
     if(y1 == y2){
         if(abs(x1 - x2) == 2){
-            if(board[(x1 + x2) / 2][y1] == '0'){
-                board[(x1 + x2) / 2][y1] = '0' + playerRound + 1;
+            if(board[y1][(x1 + x2) / 2] == '0'){
+                board[y1][(x1 + x2) / 2] = '0' + playerRound + 1;
                 playerRound = !playerRound;
             }
         }
