@@ -24,7 +24,7 @@ void StartGame()
         }
 
         window.clear();
-        loadBoard(window);
+        loadBoard();
         window.display();
     }
 

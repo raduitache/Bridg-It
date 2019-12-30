@@ -73,7 +73,7 @@ void createBoard(){
         board[i] = new char[2 * boardSize - 1];
     }
     addDotsToBoard();
-    printBoard();
+    //printBoard();
 }
 
 void linkDots(sf::Event::MouseButtonEvent mouse){
@@ -95,7 +95,7 @@ void linkDots(sf::Event::MouseButtonEvent mouse){
             }
 
             window.clear();
-            loadBoard(window);
+            loadBoard();
             window.display();
         }
     }

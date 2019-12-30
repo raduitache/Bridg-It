@@ -8,8 +8,10 @@ using namespace sf;
 using namespace std;
 
 
-void loadBoard(RenderWindow &window);
+void loadBoard();
 
 void Meniusetup(RenderWindow &meniu);
 
 void centerscreen(RenderWindow &meniu);
+
+void drawLinks(int i, int j);

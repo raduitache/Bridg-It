@@ -6,3 +6,4 @@
 #else
 #define pathSeparator "/"
 #endif // _WIN32
+#define linkWidth 2.f

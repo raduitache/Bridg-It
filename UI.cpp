@@ -1,12 +1,46 @@
 #include "UI.hpp"
 
 
-
 using namespace sf;
 
 
-void loadBoard(RenderWindow &window){
+void drawLinks(int i, int j){
+    char player;
+    Color culoare;
+    if(board[i][j] == '1'){
+        player = 'x';
+        culoare = Color::White;
+    }
+    else if(board[i][j] == '2'){
+        player = 'y';
+        culoare = Color::Red;
+    }
+    else return;
+
+    if(board[i][j-1] == player && board[i][j+1] == player){
+
+        // build link shape and draw it
+        RectangleShape link(Vector2f(colDist, linkWidth));
+        link.setPosition((j - 1) * (colDist / 2) + circleRadius, i * (rowDist / 2) + circleRadius);
+        link.setFillColor(culoare);
+        window.draw(link);
+    }
+
+    // or a vertical one
+    else if(board[i - 1][j] == player && board[i + 1][j] == player){
+
+        // build link shape and draw
+        RectangleShape link(Vector2f(linkWidth, rowDist));
+        link.setPosition(j * (colDist / 2) + circleRadius, (i - 1) * (rowDist / 2) + circleRadius);
+        link.setFillColor(culoare);
+        window.draw(link);
+    }
+
+}
+
+void loadBoard(){
     CircleShape shape(circleRadius);
+
     // load the first player's dots
     for(int i = 0; i < boardSize; i++){
         for(int j = 1; j < boardSize; j++){
@@ -14,6 +48,7 @@ void loadBoard(RenderWindow &window){
             window.draw(shape);
         }
     }
+
     // load the second player's pieces
     shape.setFillColor(Color::Red);
     for(int i = 1; i < boardSize; i++){
@@ -23,6 +58,15 @@ void loadBoard(RenderWindow &window){
         }
     }
 
+    // load links for the first player
+    for(int i = 0; i < 2 * boardSize - 1; i++){
+        for(int j = 0; j < 2 * boardSize - 1; j++){
+            // if required, draw the links
+
+            drawLinks(i, j);
+
+        }
+    }
 }
 
 void Meniusetup(RenderWindow &meniu)
