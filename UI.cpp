@@ -69,7 +69,7 @@ void loadBoard(){
     }
 }
 
-void Meniusetup(RenderWindow &meniu)
+void Meniusetup()
 {
 
     Text startText, scoreText, exitText, settingText, soundText;
@@ -80,50 +80,50 @@ void Meniusetup(RenderWindow &meniu)
     }
     startText.setFont(myfont);
     startText.setString("Start");
-    startText.setCharacterSize(80);
-    startText.setColor(Color(255,0,0));
+    startText.setCharacterSize(textSize);
+    startText.setColor(textColor);
     startText.setPosition(300,40);
     //////////////////////////
     startText.setFont(myfont);
     startText.setString("Score");
-    startText.setCharacterSize(80);
-    startText.setColor(Color(255,0,0));
+    startText.setCharacterSize(textSize);
+    startText.setColor(textColor);
     startText.setPosition(280,160);
     ///////////////////////
     settingText.setFont(myfont);
     settingText.setString("Setting");
-    settingText.setCharacterSize(80);
-    settingText.setColor(Color(255,0,0));
+    settingText.setCharacterSize(textSize);
+    settingText.setColor(textColor);
     settingText.setPosition(270,280);
     /////////////////////////
     exitText.setFont(myfont);
     exitText.setString("Exit");
-    exitText.setCharacterSize(80);
-    exitText.setColor(Color(255,0,0));
+    exitText.setCharacterSize(textSize);
+    exitText.setColor(textColor);
     exitText.setPosition(310,400);
     /////////////////////////
     soundText.setFont(myfont);
     soundText.setString("Sound");
-    soundText.setCharacterSize(80);
-    soundText.setColor(Color(255,0,0));
+    soundText.setCharacterSize(textSize);
+    soundText.setColor(textColor);
     soundText.setPosition(280,520);
 
-    while(meniu.isOpen())
+    while(window.isOpen())
     {
         sf::Event event;
 
-         while (meniu.pollEvent(event))
+         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-            meniu.close();
+            window.close();
         }
-        meniu.clear();
-        meniu.draw(startText);
-        meniu.draw(scoreText);
-        meniu.draw(settingText);
-        meniu.draw(exitText);
-        meniu.draw(soundText);
-        meniu.display();
+        window.clear();
+        window.draw(startText);
+        window.draw(scoreText);
+        window.draw(settingText);
+        window.draw(exitText);
+        window.draw(soundText);
+        window.display();
 
     }
 }

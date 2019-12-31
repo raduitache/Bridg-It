@@ -7,3 +7,5 @@
 #define pathSeparator "/"
 #endif // _WIN32
 #define linkWidth 2.f
+#define textColor sf::Color::Red
+#define textSize 80

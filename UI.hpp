@@ -10,7 +10,7 @@ using namespace std;
 
 void loadBoard();
 
-void Meniusetup(RenderWindow &meniu);
+void Meniusetup();
 
 void centerscreen(RenderWindow &meniu);
 
