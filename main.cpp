@@ -38,8 +38,9 @@ int main()
     boardSize = 8;
     createBoard();
     //StartGame();
-    window.create(sf::VideoMode(800,700), "Bridg-It");
-    Meniusetup();
+    //window.create(sf::VideoMode(800,600), "Bridg-It");
+    gameOptionsMenu();
+    //Meniusetup();
     //centerscreen(meniu);
     return 0;
 }

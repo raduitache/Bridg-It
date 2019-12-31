@@ -15,3 +15,8 @@ void Meniusetup();
 void centerscreen(RenderWindow &meniu);
 
 void drawLinks(int i, int j);
+
+void gameOptionsMenu();
+
+void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont);
+

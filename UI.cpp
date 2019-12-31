@@ -135,3 +135,75 @@ void centerscreen(RenderWindow &window)
                                      sf::VideoMode::getDesktopMode().height * 0.5 - window.getSize().y * 0.5));
 
 }
+
+void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont){
+    // set stuff that is the same for all text entries
+    for(int i = 0; i < 5; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(textColor);
+        entries[i].setFont(myFont);
+    }
+
+    // set individual characteristics;
+    entries[0].setString("Choose the board size");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("3 x 3 Board");
+    entries[2].setString("8 x 8 Board");
+    entries[3].setString("Insert custom board size");
+    entries[4].setString("Play!");
+    highlighter.setFillColor(highlightColor);
+    highlighter.setSize(Vector2f(window.getSize().x, window.getSize().y / 5));
+    textBox.setSize(Vector2f(window.getSize().x * 3 / 4, 3 * entries[3].getGlobalBounds().height / 2));
+
+    // positioning of all
+    for(int i = 0; i < 5; i++){
+        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+    }
+    highlighter.setPosition(0, window.getSize().y / 5);
+    textBox.setPosition(window.getSize().x / 8, entries[3].getPosition().y);
+}
+
+
+void gameOptionsMenu(){
+
+    window.create(VideoMode(800, 600), "Bridg-It");
+
+    // the text that will server as buttons, and the font for it
+    Text entries[5];
+    Font myFont;
+    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+
+    // two rectangles, one will represent the highlighting, and the second will simulate a textbox
+    RectangleShape highlighter, textBox;
+
+    // this will let us know which option is selected, and what to highlight
+    int selection = 1;
+
+    setGameOptionsMenuEntities(entries, highlighter, textBox, myFont);
+    // draw the window and wait for events
+    while(window.isOpen()){
+        Event event;
+        while(window.pollEvent(event)){
+            if(event.type == Event::Closed){
+                window.close();
+            }
+            if(event.type == Event::Resized){
+
+                // don't allow it to be too small for the text to be seen
+                if (window.getSize().y < 5 * (textSize + textPadding)) window.setSize(Vector2u(window.getSize().x, unsigned(5 * (textSize + textPadding))));
+
+                // adjust the view to the new window size, so the image doesn't appear stretched
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+
+                // keep the elements of the window responsive
+                setGameOptionsMenuEntities(entries, highlighter, textBox, myFont);
+            }
+        }
+        window.clear();
+        window.draw(highlighter);
+        window.draw(textBox);
+        for(int i = 0; i < 5; i++) window.draw(entries[i]);
+        window.display();
+    }
+}
