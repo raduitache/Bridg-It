@@ -4,6 +4,7 @@
 using namespace sf;
 
 
+
 void drawLinks(int i, int j){
     char player;
     Color culoare;
@@ -163,6 +164,16 @@ void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, Rec
     textBox.setPosition(window.getSize().x / 8, entries[3].getPosition().y);
 }
 
+void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[], Font &myFont){
+    int currentSelection = int(mouse.y / (window.getSize().y / 5));
+    if(currentSelection >= 4){
+        if(selection == 1) boardSize = 5;
+        if(selection == 2) boardSize = 8;
+        else boardSize = getSizeFromStr(entries[3].getString());
+    }
+    if(currentSelection != 0) selection = currentSelection;
+}
+
 
 void gameOptionsMenu(){
 
@@ -198,6 +209,12 @@ void gameOptionsMenu(){
 
                 // keep the elements of the window responsive
                 setGameOptionsMenuEntities(entries, highlighter, textBox, myFont);
+            }
+            if(event.type == Event::MouseButtonPressed){
+                if(event.mouseButton.button == Mouse::Left){
+                    setSelection(selection, event.mouseButton, entries, myFont);
+                    highlighter.setPosition(0, window.getSize().y / 5 * selection);
+                }
             }
         }
         window.clear();

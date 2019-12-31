@@ -1,4 +1,6 @@
+#include <iostream>
 #include <SFML/Window.hpp>
+#include "UI.hpp"
 #include "macros.hpp"
 #include "globalVars.hpp"
 

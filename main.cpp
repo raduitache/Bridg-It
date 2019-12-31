@@ -8,6 +8,7 @@ using namespace sf;
 
 void StartGame()
 {
+    createBoard();
     window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
     while (window.isOpen())
     {
@@ -35,8 +36,6 @@ void StartGame()
 
 int main()
 {
-    boardSize = 8;
-    createBoard();
     //StartGame();
     //window.create(sf::VideoMode(800,600), "Bridg-It");
     gameOptionsMenu();
