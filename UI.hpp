@@ -1,13 +1,14 @@
-#include <string>
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "Backend.hpp"
 #include "macros.hpp"
 #include "globalVars.hpp"
 
 using namespace sf;
 using namespace std;
 
+void startGame();
 
 void loadBoard();
 
@@ -23,3 +24,4 @@ void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, Rec
 
 void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[], Font &myFont);
 
+void linkDots(sf::Event::MouseButtonEvent mouse);

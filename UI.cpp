@@ -224,3 +224,56 @@ void gameOptionsMenu(){
         window.display();
     }
 }
+
+
+
+void linkDots(sf::Event::MouseButtonEvent mouse){
+    if(isClickValid(mouse)){
+            // wait for the second click:
+        while (window.isOpen())
+        {
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == sf::Event::Closed)
+                    window.close();
+                if (event.type == sf::Event::MouseButtonPressed){
+                    if(event.mouseButton.button == sf::Mouse::Left){
+                        linkIfValid(mouse, event.mouseButton);
+                        return;
+                    }
+                }
+            }
+
+            window.clear();
+            loadBoard();
+            window.display();
+        }
+    }
+
+}
+void startGame()
+{
+    createBoard();
+    window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if (event.type == Event::MouseButtonPressed){
+                if(event.mouseButton.button == Mouse::Left){
+                    linkDots(event.mouseButton);
+                }
+            }
+        }
+
+        window.clear();
+        loadBoard();
+        window.display();
+    }
+
+
+}

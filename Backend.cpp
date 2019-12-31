@@ -74,28 +74,7 @@ void createBoard(){
     //printBoard();
 }
 
-void linkDots(sf::Event::MouseButtonEvent mouse){
-    if(isClickValid(mouse)){
-            // wait for the second click:
-        while (window.isOpen())
-        {
-            sf::Event event;
-            while (window.pollEvent(event))
-            {
-                if (event.type == sf::Event::Closed)
-                    window.close();
-                if (event.type == sf::Event::MouseButtonPressed){
-                    if(event.mouseButton.button == sf::Mouse::Left){
-                        linkIfValid(mouse, event.mouseButton);
-                        return;
-                    }
-                }
-            }
 
-            window.clear();
-            loadBoard();
-            window.display();
-        }
-    }
+int getSizeFromStr(string s){
 
 }
