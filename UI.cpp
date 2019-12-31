@@ -148,7 +148,7 @@ void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, Rec
     // set individual characteristics;
     entries[0].setString("Choose the board size");
     entries[0].setStyle(Text::Bold | Text::Underlined);
-    entries[1].setString("3 x 3 Board");
+    entries[1].setString("5 x 5 Board");
     entries[2].setString("8 x 8 Board");
     entries[3].setString("Insert custom board size");
     entries[4].setString("Play!");
@@ -168,8 +168,13 @@ void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[],
     int currentSelection = int(mouse.y / (window.getSize().y / 5));
     if(currentSelection >= 4){
         if(selection == 1) boardSize = 5;
-        if(selection == 2) boardSize = 8;
-        else boardSize = getSizeFromStr(entries[3].getString());
+        else if (selection == 2) boardSize = 8;
+        else boardSize = getSizeFromStr(entries[selection].getString());
+        if(boardSize == -1) entries[3].setString("Invalid format! Try either n or n x n format");
+        else startGame();
+    }
+    if(currentSelection == 3){
+        entries[3].setString("");
     }
     if(currentSelection != 0) selection = currentSelection;
 }
@@ -215,6 +220,9 @@ void gameOptionsMenu(){
                     setSelection(selection, event.mouseButton, entries, myFont);
                     highlighter.setPosition(0, window.getSize().y / 5 * selection);
                 }
+            }
+            if(event.type == Event::TextEntered && selection == 3){
+                entries[3].setString(entries[3].getString() + event.text.unicode);
             }
         }
         window.clear();

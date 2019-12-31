@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <algorithm>
 #include <SFML/Window.hpp>
 #include "macros.hpp"
 #include "globalVars.hpp"

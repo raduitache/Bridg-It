@@ -12,7 +12,7 @@ using namespace sf;
 
 int main()
 {
-    startGame();
+    //startGame();
     //window.create(sf::VideoMode(800,600), "Bridg-It");
     gameOptionsMenu();
     //Meniusetup();
