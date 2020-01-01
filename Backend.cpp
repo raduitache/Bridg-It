@@ -76,6 +76,8 @@ void createBoard(){
 
 
 int getSizeFromStr(string s){
+    if(s.size() == 0)
+        return -1;
     s.erase(remove(s.begin(), s.end(), ' '), s.end());
     size_t found = s.find("x");
     if(found != string::npos){

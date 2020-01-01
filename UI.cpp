@@ -222,7 +222,13 @@ void gameOptionsMenu(){
                 }
             }
             if(event.type == Event::TextEntered && selection == 3){
-                entries[3].setString(entries[3].getString() + event.text.unicode);
+                if(event.text.unicode == 8){
+                    sf::String myStr = entries[3].getString();
+                    myStr.erase(myStr.getSize() - 1);
+                    entries[3].setString(myStr);
+                }
+                else
+                    entries[3].setString(entries[3].getString() + event.text.unicode);
             }
         }
         window.clear();
