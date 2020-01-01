@@ -51,52 +51,45 @@ void StartGame()
 void Meniusetup(RenderWindow &meniu)
 {
 
-   sf::Sprite sprite;
-   sf::Texture texture;
-    if(!texture.loadFromFile("Forma.jpg"))
-    {
-        cout<<"Eroare";
-    }
-    sprite.setTexture(texture);
 
-   sprite.setColor(sf::Color(255, 255, 204,128));
-   sprite.setPosition(sf::Vector2f(300,40));
 
-    Text startText,scoreText,exitText,settingText,soundText;
+    Text startText,scoreText,exitText,settingText,soundText,welcomeText;
     Font myfont;
-    if(!myfont.loadFromFile("Roboto-Italic.ttf"))
+    if(!myfont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf"))
     {
         cout<<"Errors font, can't loaded"<<endl;
     }
+
+    welcomeText.setStyle(sf::Text::Bold | sf::Text::Underlined);
+    welcomeText.setFont(myfont);
+    welcomeText.setString("Welcome");
+    welcomeText.setCharacterSize(80);
+    welcomeText.setColor(Color(255,0,0));
+   welcomeText.setPosition(240,40);
+    ///////////////////////
    startText.setFont(myfont);
     startText.setString("Start");
     startText.setCharacterSize(80);
     startText.setColor(Color(255,0,0));
-    startText.setPosition(300,40);
+    startText.setPosition(300,140);
     //////////////////////////
     scoreText.setFont(myfont);
     scoreText.setString("Score");
     scoreText.setCharacterSize(80);
     scoreText.setColor(Color(255,0,0));
-    scoreText.setPosition(280,160);
+    scoreText.setPosition(280,240);
     ///////////////////////
     settingText.setFont(myfont);
     settingText.setString("Setting");
     settingText.setCharacterSize(80);
     settingText.setColor(Color(255,0,0));
-    settingText.setPosition(270,280);
+    settingText.setPosition(270,340);
     /////////////////////////
     exitText.setFont(myfont);
     exitText.setString("Exit");
     exitText.setCharacterSize(80);
     exitText.setColor(Color(255,0,0));
-    exitText.setPosition(310,400);
-    /////////////////////////
-    soundText.setFont(myfont);
-    soundText.setString("Sound");
-    soundText.setCharacterSize(80);
-    soundText.setColor(Color(255,0,0));
-    soundText.setPosition(280,520);
+    exitText.setPosition(310,440);
 
     while(meniu.isOpen())
     {
@@ -108,12 +101,11 @@ void Meniusetup(RenderWindow &meniu)
             meniu.close();
         }
         meniu.clear();
+        meniu.draw(welcomeText);
         meniu.draw(startText);
         meniu.draw(scoreText);
-        meniu.draw(sprite);
         meniu.draw(settingText);
         meniu.draw(exitText);
-        meniu.draw(soundText);
         meniu.display();
     }
 
@@ -144,7 +136,7 @@ int main()
 
     //startGame();
     //window.create(sf::VideoMode(800,600), "Bridg-It");
-    gameOptionsMenu();
+   // gameOptionsMenu();
     //Meniusetup();
     //centerscreen(meniu);
 

@@ -89,7 +89,7 @@ void Meniusetup()
     startText.setString("Score");
     startText.setCharacterSize(textSize);
     startText.setColor(textColor);
-    startText.setPosition(280,160);
+    startText.setPosition(300,40);
     ///////////////////////
     settingText.setFont(myfont);
     settingText.setString("Setting");
@@ -129,13 +129,6 @@ void Meniusetup()
     }
 }
 
-
-void centerscreen(RenderWindow &window)
-{
-    window.setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width * 0.5 - window.getSize().x * 0.5,
-                                     sf::VideoMode::getDesktopMode().height * 0.5 - window.getSize().y * 0.5));
-
-}
 
 void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont){
     // set stuff that is the same for all text entries
