@@ -1,5 +1,5 @@
 #include "Backend.hpp"
-
+#include <sstream>
 using namespace std;
 
 
@@ -76,6 +76,7 @@ void createBoard(){
 
 
 int getSizeFromStr(string s){
+    std::string::size_type sz;
     if(s.size() == 0)
         return -1;
     s.erase(remove(s.begin(), s.end(), ' '), s.end());
@@ -85,8 +86,11 @@ int getSizeFromStr(string s){
             return -1;
         }
     }
+   stringstream geek(s);
+    int x = 0;
+    geek >> x;
     try{
-      //  return stoi(s);
+       return x;
     }
     catch(int e){
         return -1;

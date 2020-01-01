@@ -136,8 +136,8 @@ int main()
 
     //startGame();
     //window.create(sf::VideoMode(800,600), "Bridg-It");
-   // gameOptionsMenu();
-    //Meniusetup();
+   gameOptionsMenu();
+   // Meniusetup();
     //centerscreen(meniu);
 
     return 0;
