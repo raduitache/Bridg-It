@@ -86,7 +86,7 @@ int getSizeFromStr(string s){
         }
     }
     try{
-        return stoi(s);
+      //  return stoi(s);
     }
     catch(int e){
         return -1;

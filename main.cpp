@@ -6,7 +6,7 @@ using namespace std;
 
 using namespace sf;
 
-<<<<<<< HEAD
+
 void loadBoard(RenderWindow &window){
     CircleShape shape(circleRadius);
     // load the first player's dots
@@ -115,25 +115,23 @@ void Meniusetup(RenderWindow &meniu)
         meniu.draw(exitText);
         meniu.draw(soundText);
         meniu.display();
-=======
->>>>>>> master
+    }
+
+    }
 
 
-<<<<<<< HEAD
 
 
 void centerscreen(RenderWindow &window)
 {
     window.setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width * 0.5 - window.getSize().x * 0.5,
                                      sf::VideoMode::getDesktopMode().height * 0.5 - window.getSize().y * 0.5));
-=======
->>>>>>> master
 
+
+}
 
 int main()
 {
-<<<<<<< HEAD
-
 
     sf::RenderWindow meniu(sf::VideoMode(800,700), "Bridg-It");
 
@@ -143,13 +141,13 @@ int main()
 
 
 
-=======
+
     //startGame();
     //window.create(sf::VideoMode(800,600), "Bridg-It");
     gameOptionsMenu();
     //Meniusetup();
     //centerscreen(meniu);
->>>>>>> master
+
     return 0;
 }
 
