@@ -26,3 +26,7 @@ void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, Rec
 void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[], Font &myFont);
 
 void linkDots(sf::Event::MouseButtonEvent mouse);
+
+void dificultyMeniu();
+
+void numberOfPlayerMeniu();

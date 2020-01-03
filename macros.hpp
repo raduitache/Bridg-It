@@ -8,6 +8,6 @@
 #endif // _WIN32
 #define linkWidth 2.f
 #define textColor sf::Color::Red
-#define textSize 50
+#define textSize 60
 #define highlightColor sf::Color(111, 240, 242)
 #define textPadding 10

@@ -300,3 +300,91 @@ void startGame()
 
 
 }
+
+void dificultyMeniu()
+{
+    window.create(sf::VideoMode(800,600), "Bridg-It");
+
+     Text entries[4];
+     Font myFont;
+    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    for(int i = 0; i < 4; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(textColor);
+        entries[i].setFont(myFont);
+    }
+
+    // set individual characteristics;
+    entries[0].setString("Chose Difficulty");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("Easy");
+    entries[2].setString("Normal");
+    entries[3].setString("Hard");
+     for(int i = 0; i <4; i++){
+        entries[i].setPosition(window.getSize().x / 2 -
+        entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+    }
+
+    while(window.isOpen())
+    {
+        sf::Event event;
+
+         while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            window.close();
+        }
+        window.clear();
+       for(int i = 0; i < 4; i++) window.draw(entries[i]);
+        window.display();
+
+    }
+
+}
+
+void numberOfPlayerMeniu()
+{
+    window.create(sf::VideoMode(800,600), "Bridg-It");
+    Text entries[4];
+    Font myFont;
+    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    for(int i = 0; i < 4; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(textColor);
+        entries[i].setFont(myFont);
+    }
+
+     // set individual characteristics;
+    entries[0].setString("Player Vs Player");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("Player Vs Pc");
+    entries[1].setStyle(Text::Bold | Text::Underlined);
+
+
+     for(int i = 0; i <2; i++){
+        entries[i].setPosition(window.getSize().x/2 -
+        entries[i].getGlobalBounds().width /2,(i+0.4)* (window.getSize().y/2));
+
+    }
+
+     while(window.isOpen())
+    {
+        sf::Event event;
+
+         while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            window.close();
+            if(event.type == Event::MouseButtonPressed)
+                if(event.mouseButton.button == Mouse::Left)
+                linkDots(event.mouseButton);
+
+        }
+        window.clear();
+       for(int i = 0; i < 2; i++) window.draw(entries[i]);
+        window.display();
+
+    }
+
+}
+

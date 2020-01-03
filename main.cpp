@@ -17,6 +17,8 @@ int main()
     //gameOptionsMenu();
      //Meniusetup();
     //centerscreen(meniu);
+     //dificultyMeniu();
+      //numberOfPlayerMeniu();
     return 0;
 }
 
