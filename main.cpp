@@ -6,17 +6,18 @@ using namespace std;
 
 using namespace sf;
 
-
-
-
-
 int main()
 {
     //startGame();
-    //window.create(sf::VideoMode(800,600), "Bridg-It");
-    gameOptionsMenu();
-    //Meniusetup();
+
+
+    //gameOptionsMenu();
+     Meniusetup();
     //centerscreen(meniu);
+     //dificultyMeniu();
+      //numberOfPlayerMeniu();
+
+
     return 0;
 }
 

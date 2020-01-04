@@ -72,42 +72,53 @@ void loadBoard(){
 
 void Meniusetup()
 {
+     window.create(sf::VideoMode(800,600), "Bridg-It");
 
-    Text startText, scoreText, exitText, settingText, soundText;
+    Text startText, scoreText, exitText, settingText, soundText,welcomeText;
     Font myfont;
     if(!myfont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf"))
     {
         cout<<"Errors font, can't loaded"<<endl;
     }
+    welcomeText.setFont(myfont);
+   welcomeText.setString("welcome");
+    welcomeText.setCharacterSize(textSize);
+    welcomeText.setColor(textColor);
+    welcomeText.setPosition(180,0);
+    welcomeText.setCharacterSize(100);
+    welcomeText.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+    //////////////////////////////
     startText.setFont(myfont);
     startText.setString("Start");
     startText.setCharacterSize(textSize);
     startText.setColor(textColor);
-    startText.setPosition(300,40);
+    startText.setPosition(300,140);
+    startText.setCharacterSize(60);
     //////////////////////////
-    startText.setFont(myfont);
-    startText.setString("Score");
-    startText.setCharacterSize(textSize);
-    startText.setColor(textColor);
-    startText.setPosition(280,160);
+
+    scoreText.setFont(myfont);
+    scoreText.setString("Score");
+    scoreText.setCharacterSize(textSize);
+    scoreText.setColor(textColor);
+    scoreText.setPosition(280,220);
+    scoreText.setCharacterSize(60);
+
+
     ///////////////////////
     settingText.setFont(myfont);
     settingText.setString("Setting");
     settingText.setCharacterSize(textSize);
     settingText.setColor(textColor);
-    settingText.setPosition(270,280);
+    settingText.setPosition(270,300);
+    settingText.setCharacterSize(60);
     /////////////////////////
     exitText.setFont(myfont);
     exitText.setString("Exit");
     exitText.setCharacterSize(textSize);
     exitText.setColor(textColor);
-    exitText.setPosition(310,400);
-    /////////////////////////
-    soundText.setFont(myfont);
-    soundText.setString("Sound");
-    soundText.setCharacterSize(textSize);
-    soundText.setColor(textColor);
-    soundText.setPosition(280,520);
+    exitText.setPosition(310,380);
+    exitText.setCharacterSize(60);
 
     while(window.isOpen())
     {
@@ -119,23 +130,17 @@ void Meniusetup()
             window.close();
         }
         window.clear();
+        window.draw(welcomeText);
         window.draw(startText);
         window.draw(scoreText);
         window.draw(settingText);
         window.draw(exitText);
-        window.draw(soundText);
+
         window.display();
 
     }
 }
 
-
-void centerscreen(RenderWindow &window)
-{
-    window.setPosition(sf::Vector2i(sf::VideoMode::getDesktopMode().width * 0.5 - window.getSize().x * 0.5,
-                                     sf::VideoMode::getDesktopMode().height * 0.5 - window.getSize().y * 0.5));
-
-}
 
 void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont){
     // set stuff that is the same for all text entries
@@ -291,3 +296,91 @@ void startGame()
 
 
 }
+
+void dificultyMeniu()
+{
+    window.create(sf::VideoMode(800,600), "Bridg-It");
+
+     Text entries[4];
+     Font myFont;
+    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    for(int i = 0; i < 4; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(textColor);
+        entries[i].setFont(myFont);
+    }
+
+    // set individual characteristics;
+    entries[0].setString("Chose Difficulty");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("Easy");
+    entries[2].setString("Normal");
+    entries[3].setString("Hard");
+     for(int i = 0; i <4; i++){
+        entries[i].setPosition(window.getSize().x / 2 -
+        entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+    }
+
+    while(window.isOpen())
+    {
+        sf::Event event;
+
+         while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            window.close();
+        }
+        window.clear();
+       for(int i = 0; i < 4; i++) window.draw(entries[i]);
+        window.display();
+
+    }
+
+}
+
+void numberOfPlayerMeniu()
+{
+    window.create(sf::VideoMode(800,600), "Bridg-It");
+    Text entries[4];
+    Font myFont;
+    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    for(int i = 0; i < 4; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(textColor);
+        entries[i].setFont(myFont);
+    }
+
+     // set individual characteristics;
+    entries[0].setString("Player Vs Player");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("Player Vs Pc");
+    entries[1].setStyle(Text::Bold | Text::Underlined);
+
+
+     for(int i = 0; i <2; i++){
+        entries[i].setPosition(window.getSize().x/2 -
+        entries[i].getGlobalBounds().width /2,(i+0.4)* (window.getSize().y/2));
+
+    }
+
+     while(window.isOpen())
+    {
+        sf::Event event;
+
+         while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            window.close();
+            if(event.type == Event::MouseButtonPressed)
+                if(event.mouseButton.button == Mouse::Left)
+                linkDots(event.mouseButton);
+
+        }
+        window.clear();
+       for(int i = 0; i < 2; i++) window.draw(entries[i]);
+        window.display();
+
+    }
+
+}
+
