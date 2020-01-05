@@ -97,17 +97,17 @@ void eventEnter(int &selection){
 }
 
 void Meniusetup(){
-     window.create(sf::VideoMode(800,600), "Bridg-It");
+    window.create(sf::VideoMode(800,600), "Bridg-It");
 
     Text entries[5];
-     Font myFont;
+    Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
-     for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 5; i++){
         entries[i].setCharacterSize(textSize);
         entries[i].setColor(textColor);
         entries[i].setFont(myFont);
     }
- entries[0].setString("WELCOME");
+    entries[0].setString("WELCOME");
     entries[0].setStyle(Text::Bold | Text::Underlined);
     entries[1].setString("Start Game");
     entries[2].setString("Settings");
@@ -116,7 +116,7 @@ void Meniusetup(){
     int dimension=5;
     int selection=1;
     entries[1].setColor(sf::Color::White);
-for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 5; i++){
         entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
     }
     while(window.isOpen())
