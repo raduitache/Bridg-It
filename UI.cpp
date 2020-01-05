@@ -1,9 +1,6 @@
 #include "UI.hpp"
 
-
 using namespace sf;
-
-
 
 void drawLinks(int i, int j){
     char player;
@@ -70,77 +67,94 @@ void loadBoard(){
     }
 }
 
-void Meniusetup()
-{
+void moveUp(int &selection,Text entries[]){
+    if(selection-1>0)
+    {
+        entries[selection].setColor(sf::Color::Red);
+        selection--;
+        entries[selection].setColor(sf::Color::White);
+    }
+}
+
+void moveDown(int &selection,Text entries[],int dimensions){
+    if(selection+1<dimensions)
+    {
+        entries[selection].setColor(sf::Color::Red);
+        selection++;
+        entries[selection].setColor(sf::Color::White);
+    }
+}
+
+void eventEnter(int &selection){
+    if(selection==1)
+    gameOptionsMenu();
+    if(selection==2)
+        numberOfPlayerMeniu();
+    if(selection==4)
+     window.close();
+
+
+}
+
+void Meniusetup(){
      window.create(sf::VideoMode(800,600), "Bridg-It");
 
-    Text startText, scoreText, exitText, settingText, soundText,welcomeText;
-    Font myfont;
-    if(!myfont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf"))
-    {
-        cout<<"Errors font, can't loaded"<<endl;
+    Text entries[5];
+     Font myFont;
+    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+     for(int i = 0; i < 5; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(textColor);
+        entries[i].setFont(myFont);
     }
-    welcomeText.setFont(myfont);
-   welcomeText.setString("welcome");
-    welcomeText.setCharacterSize(textSize);
-    welcomeText.setColor(textColor);
-    welcomeText.setPosition(180,0);
-    welcomeText.setCharacterSize(100);
-    welcomeText.setStyle(sf::Text::Bold | sf::Text::Underlined);
-
-    //////////////////////////////
-    startText.setFont(myfont);
-    startText.setString("Start");
-    startText.setCharacterSize(textSize);
-    startText.setColor(textColor);
-    startText.setPosition(300,140);
-    startText.setCharacterSize(60);
-    //////////////////////////
-
-    scoreText.setFont(myfont);
-    scoreText.setString("Score");
-    scoreText.setCharacterSize(textSize);
-    scoreText.setColor(textColor);
-    scoreText.setPosition(280,220);
-    scoreText.setCharacterSize(60);
-
-
-    ///////////////////////
-    settingText.setFont(myfont);
-    settingText.setString("Setting");
-    settingText.setCharacterSize(textSize);
-    settingText.setColor(textColor);
-    settingText.setPosition(270,300);
-    settingText.setCharacterSize(60);
-    /////////////////////////
-    exitText.setFont(myfont);
-    exitText.setString("Exit");
-    exitText.setCharacterSize(textSize);
-    exitText.setColor(textColor);
-    exitText.setPosition(310,380);
-    exitText.setCharacterSize(60);
-
+ entries[0].setString("WELCOME");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("Start Game");
+    entries[2].setString("Settings");
+    entries[3].setString("High Score");
+    entries[4].setString("Exit");
+    int dimension=5;
+    int selection=1;
+for(int i = 0; i < 5; i++){
+        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+    }
     while(window.isOpen())
     {
-        sf::Event event;
+        Event event;
 
          while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-            window.close();
+            switch(event.type)
+            {
+                case sf::Event::KeyReleased:
+
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Up:
+                    moveUp(selection,entries);
+                    break;
+
+                    case sf::Keyboard::Down:
+                    moveDown(selection,entries,dimension);
+                    break;
+
+                   case sf::Keyboard::Enter:
+                        eventEnter(selection);
+                        break ;
+                }
+                break;
+            }
+
+
+
+
         }
         window.clear();
-        window.draw(welcomeText);
-        window.draw(startText);
-        window.draw(scoreText);
-        window.draw(settingText);
-        window.draw(exitText);
-
+             for(int i = 0; i < 5; i++) window.draw(entries[i]);
         window.display();
 
     }
 }
-
 
 void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont){
     // set stuff that is the same for all text entries
@@ -149,6 +163,7 @@ void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, Rec
         entries[i].setColor(textColor);
         entries[i].setFont(myFont);
     }
+
 
     // set individual characteristics;
     entries[0].setString("Choose the board size");
@@ -183,7 +198,6 @@ void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[],
     }
     if(currentSelection != 0) selection = currentSelection;
 }
-
 
 void gameOptionsMenu(){
 
@@ -244,9 +258,8 @@ void gameOptionsMenu(){
     }
 }
 
-
-
 void linkDots(sf::Event::MouseButtonEvent mouse){
+
     if(isClickValid(mouse)){
             // wait for the second click:
         while (window.isOpen())
@@ -271,8 +284,7 @@ void linkDots(sf::Event::MouseButtonEvent mouse){
     }
 
 }
-void startGame()
-{
+void startGame(){
     createBoard();
     window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
     while (window.isOpen())
@@ -297,8 +309,7 @@ void startGame()
 
 }
 
-void dificultyMeniu()
-{
+void dificultyMeniu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
 
      Text entries[4];
@@ -338,8 +349,7 @@ void dificultyMeniu()
 
 }
 
-void numberOfPlayerMeniu()
-{
+void numberOfPlayerMeniu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
     Text entries[4];
     Font myFont;
