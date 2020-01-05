@@ -15,7 +15,7 @@ int main()
      Meniusetup();
     //centerscreen(meniu);
      //dificultyMeniu();
-     // numberOfPlayerMeniu();
+     // numberOfPlayerMenu();
 
 
     return 0;

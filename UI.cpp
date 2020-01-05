@@ -87,9 +87,9 @@ void moveDown(int &selection,Text entries[],int dimensions){
 
 void eventEnter(int &selection){
     if(selection==1)
-    numberOfPlayerMeniu();
+    numberOfPlayerMenu();
     if(selection==2)
-        numberOfPlayerMeniu();
+        numberOfPlayerMenu();
     if(selection==4)
      window.close();
 
@@ -115,6 +115,7 @@ void Meniusetup(){
     entries[4].setString("Exit");
     int dimension=5;
     int selection=1;
+    entries[1].setColor(sf::Color::White);
 for(int i = 0; i < 5; i++){
         entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
     }
@@ -144,9 +145,8 @@ for(int i = 0; i < 5; i++){
                 }
                 break;
             }
-
-
-
+           if(event.type == Event::Closed)
+                window.close();
 
         }
         window.clear();
@@ -309,7 +309,7 @@ void startGame(){
 
 }
 
-void dificultyMeniu(){
+void dificultyMenu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
 
      Text entries[4];
@@ -333,6 +333,7 @@ void dificultyMeniu(){
     }
     int selection=1;
     int dimension=4;
+    entries[1].setColor(sf::Color::White);
 
     while(window.isOpen())
     {
@@ -356,11 +357,13 @@ void dificultyMeniu(){
 
 
                    case sf::Keyboard::Escape:
-                    numberOfPlayerMeniu();
+                    numberOfPlayerMenu();
                     break;
                 }
                 break;
             }
+          if(event.type == Event::Closed)
+                window.close();
         }
         window.clear();
        for(int i = 0; i < 4; i++) window.draw(entries[i]);
@@ -375,15 +378,11 @@ void eventEnter1(int &selection,Text entries[])
     if(selection==1)
     gameOptionsMenu();
     if(selection==2)
-    dificultyMeniu();
-
-
-
-
+    dificultyMenu();
 
 }
 
-void numberOfPlayerMeniu(){
+void numberOfPlayerMenu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
     Text entries[3];
     Font myFont;
@@ -406,8 +405,9 @@ void numberOfPlayerMeniu(){
         entries[i].getGlobalBounds().width /2,i* (window.getSize().y/3));
 
     }
-    int selection=0;
+    int selection=1;
     int dimension=3;
+    entries[1].setColor(sf::Color::White);
 
      while(window.isOpen())
     {
@@ -438,6 +438,8 @@ void numberOfPlayerMeniu(){
                 }
                 break;
             }
+             if(event.type == Event::Closed)
+                window.close();
 
         }
         window.clear();
