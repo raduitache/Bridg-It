@@ -2,9 +2,9 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "globalVars.hpp"
 #include "Backend.hpp"
 #include "macros.hpp"
-#include "globalVars.hpp"
 
 using namespace sf;
 using namespace std;
@@ -21,12 +21,12 @@ void drawLinks(int i, int j);
 
 void gameOptionsMenu();
 
-void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont);
+void setGameOptionsMenuEntities(Text entries[], Font &myFont, int selection);
 
 void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[], Font &myFont);
 
 void linkDots(sf::Event::MouseButtonEvent mouse);
 
-void dificultyMeniu();
+void dificultyMenu();
 
 void numberOfPlayerMenu();

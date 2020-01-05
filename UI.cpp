@@ -156,14 +156,14 @@ void Meniusetup(){
     }
 }
 
-void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, RectangleShape &textBox, Font &myFont){
+void setGameOptionsMenuEntities(Text entries[], Font &myFont, int selection){
     // set stuff that is the same for all text entries
     for(int i = 0; i < 5; i++){
         entries[i].setCharacterSize(textSize);
         entries[i].setColor(textColor);
         entries[i].setFont(myFont);
     }
-
+    entries[selection].setColor(selectedTextColor);
 
     // set individual characteristics;
     entries[0].setString("Choose the board size");
@@ -172,16 +172,11 @@ void setGameOptionsMenuEntities(Text entries[], RectangleShape &highlighter, Rec
     entries[2].setString("8 x 8 Board");
     entries[3].setString("Insert custom board size");
     entries[4].setString("Play!");
-    highlighter.setFillColor(highlightColor);
-    highlighter.setSize(Vector2f(window.getSize().x, window.getSize().y / 5));
-    textBox.setSize(Vector2f(window.getSize().x * 3 / 4, 3 * entries[3].getGlobalBounds().height / 2));
 
     // positioning of all
     for(int i = 0; i < 5; i++){
         entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
     }
-    highlighter.setPosition(0, window.getSize().y / 5);
-    textBox.setPosition(window.getSize().x / 8, entries[3].getPosition().y);
 }
 
 void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[], Font &myFont){
@@ -208,51 +203,60 @@ void gameOptionsMenu(){
     Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
 
-    // two rectangles, one will represent the highlighting, and the second will simulate a textbox
-    RectangleShape highlighter, textBox;
+    // set how many options we use
+    int dim = 5;
+
 
     // this will let us know which option is selected, and what to highlight
     int selection = 1;
 
-    setGameOptionsMenuEntities(entries, highlighter, textBox, myFont);
+    setGameOptionsMenuEntities(entries, myFont, selection);
     // draw the window and wait for events
     while(window.isOpen()){
         Event event;
         while(window.pollEvent(event)){
-            if(event.type == Event::Closed){
-                window.close();
-            }
-            if(event.type == Event::Resized){
+            switch(event.type){
+                case Event::Closed:
+                    window.close();
+                    break;
 
-                // don't allow it to be too small for the text to be seen
-                if (window.getSize().y < 5 * (textSize + textPadding)) window.setSize(Vector2u(window.getSize().x, unsigned(5 * (textSize + textPadding))));
+                case Event::Resized:
+                {
+                    // don't allow it to be too small for the text to be seen
+                    if (window.getSize().y < 5 * (textSize + textPadding)) window.setSize(Vector2u(window.getSize().x, unsigned(5 * (textSize + textPadding))));
 
-                // adjust the view to the new window size, so the image doesn't appear stretched
-                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                window.setView(sf::View(visibleArea));
+                    // adjust the view to the new window size, so the image doesn't appear stretched
+                    sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                    window.setView(sf::View(visibleArea));
 
-                // keep the elements of the window responsive
-                setGameOptionsMenuEntities(entries, highlighter, textBox, myFont);
-            }
-            if(event.type == Event::MouseButtonPressed){
-                if(event.mouseButton.button == Mouse::Left){
-                    setSelection(selection, event.mouseButton, entries, myFont);
-                    highlighter.setPosition(0, window.getSize().y / 5 * selection);
+                    // keep the elements of the window responsive
+                    setGameOptionsMenuEntities(entries, myFont, selection);
+                    break;
                 }
-            }
-            if(event.type == Event::TextEntered && selection == 3){
-                if(event.text.unicode == 8){
-                    sf::String myStr = entries[3].getString();
-                    myStr.erase(myStr.getSize() - 1);
-                    entries[3].setString(myStr);
-                }
-                else
-                    entries[3].setString(entries[3].getString() + event.text.unicode);
+                case Event::KeyPressed:
+                    switch(event.key.code){
+                        case Keyboard::Up:
+                            moveUp(selection, entries);
+                            break;
+                        case Keyboard::Down:
+                            moveDown(selection, entries, dim);
+                            break;
+                        case Keyboard::Enter:
+                            switch(selection){
+                                case 1: boardSize = 5; break;
+                                case 2: boardSize = 8; break;
+
+                            }
+                            startGame();
+                            break;
+                        case Keyboard::Escape:
+                            numberOfPlayerMenu();
+                            break;
+                    }
+                break;
             }
         }
         window.clear();
-        window.draw(highlighter);
-        window.draw(textBox);
         for(int i = 0; i < 5; i++) window.draw(entries[i]);
         window.display();
     }
@@ -292,8 +296,11 @@ void startGame(){
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
                 window.close();
+                gameOptionsMenu();
+            }
+
             if (event.type == Event::MouseButtonPressed){
                 if(event.mouseButton.button == Mouse::Left){
                     linkDots(event.mouseButton);
@@ -417,7 +424,7 @@ void numberOfPlayerMenu(){
         {
           switch(event.type)
             {
-                case sf::Event::KeyReleased:
+                case sf::Event::KeyPressed:
 
                 switch(event.key.code)
                 {
