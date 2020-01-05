@@ -29,4 +29,4 @@ void linkDots(sf::Event::MouseButtonEvent mouse);
 
 void dificultyMeniu();
 
-void numberOfPlayerMeniu();
+void numberOfPlayerMenu();
