@@ -87,7 +87,7 @@ void moveDown(int &selection,Text entries[],int dimensions){
 
 void eventEnter(int &selection){
     if(selection==1)
-    gameOptionsMenu();
+    numberOfPlayerMeniu();
     if(selection==2)
         numberOfPlayerMeniu();
     if(selection==4)
@@ -331,6 +331,8 @@ void dificultyMeniu(){
         entries[i].setPosition(window.getSize().x / 2 -
         entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
     }
+    int selection=1;
+    int dimension=4;
 
     while(window.isOpen())
     {
@@ -338,8 +340,27 @@ void dificultyMeniu(){
 
          while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-            window.close();
+          switch(event.type)
+            {
+                case sf::Event::KeyReleased:
+
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Up:
+                    moveUp(selection,entries);
+                    break;
+
+                    case sf::Keyboard::Down:
+                    moveDown(selection,entries,dimension);
+                    break;
+
+
+                   case sf::Keyboard::Escape:
+                    numberOfPlayerMeniu();
+                    break;
+                }
+                break;
+            }
         }
         window.clear();
        for(int i = 0; i < 4; i++) window.draw(entries[i]);
@@ -349,48 +370,84 @@ void dificultyMeniu(){
 
 }
 
+void eventEnter1(int &selection,Text entries[])
+{
+    if(selection==1)
+    gameOptionsMenu();
+    if(selection==2)
+    dificultyMeniu();
+
+
+
+
+
+}
+
 void numberOfPlayerMeniu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
-    Text entries[4];
+    Text entries[3];
     Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 3; i++){
         entries[i].setCharacterSize(textSize);
         entries[i].setColor(textColor);
         entries[i].setFont(myFont);
     }
 
      // set individual characteristics;
-    entries[0].setString("Player Vs Player");
-    entries[0].setStyle(Text::Bold | Text::Underlined);
-    entries[1].setString("Player Vs Pc");
+    entries[1].setString("Player Vs Player");
     entries[1].setStyle(Text::Bold | Text::Underlined);
+    entries[2].setString("Player Vs Pc");
+    entries[2].setStyle(Text::Bold | Text::Underlined);
 
 
-     for(int i = 0; i <2; i++){
+     for(int i = 0; i <3; i++){
         entries[i].setPosition(window.getSize().x/2 -
-        entries[i].getGlobalBounds().width /2,(i+0.4)* (window.getSize().y/2));
+        entries[i].getGlobalBounds().width /2,i* (window.getSize().y/3));
 
     }
+    int selection=0;
+    int dimension=3;
 
      while(window.isOpen())
     {
-        sf::Event event;
+       Event event;
 
          while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-            window.close();
-            if(event.type == Event::MouseButtonPressed)
-                if(event.mouseButton.button == Mouse::Left)
-                linkDots(event.mouseButton);
+          switch(event.type)
+            {
+                case sf::Event::KeyReleased:
+
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Up:
+                    moveUp(selection,entries);
+                    break;
+
+                    case sf::Keyboard::Down:
+                    moveDown(selection,entries,dimension);
+                    break;
+
+                   case sf::Keyboard::Enter:
+                        eventEnter1(selection,entries);
+                        break ;
+                   case sf::Keyboard::Escape:
+                    Meniusetup();
+                    break;
+                }
+                break;
+            }
 
         }
         window.clear();
-       for(int i = 0; i < 2; i++) window.draw(entries[i]);
+       for(int i = 0; i < 3; i++) window.draw(entries[i]);
         window.display();
+    }
+
+
 
     }
 
-}
+
 
