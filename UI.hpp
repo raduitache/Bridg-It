@@ -1,3 +1,4 @@
+#include <cmath>
 #include <string>
 #include <iostream>
 #include <SFML/Window.hpp>

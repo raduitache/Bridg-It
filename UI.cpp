@@ -165,12 +165,23 @@ void setGameOptionsMenuEntities(Text entries[], Font &myFont, int selection){
     }
     entries[selection].setColor(selectedTextColor);
 
+
+    // maximum size of the board, considering the screen resolution
+    int maxBoardSize = floor((VideoMode::getDesktopMode().height - 2 * circleRadius) / rowDist);
+
     // set individual characteristics;
     entries[0].setString("Choose the board size");
     entries[0].setStyle(Text::Bold | Text::Underlined);
     entries[1].setString("5 x 5 Board");
     entries[2].setString("8 x 8 Board");
-    entries[3].setString("12 x 12 Board");
+
+    // prevent having two identical options
+    if(maxBoardSize <= 8){
+        entries[1].setString("3 x 3 Board");
+        entries[2].setString("5 x 5 Board");
+    }
+    entries[3].setString(to_string(maxBoardSize) + " x " + to_string(maxBoardSize) + " Board");
+
 
     // positioning of all
     for(int i = 0; i < 4; i++){
@@ -241,11 +252,7 @@ void gameOptionsMenu(){
                             moveDown(selection, entries, dim);
                             break;
                         case Keyboard::Enter:
-                            switch(selection){
-                                case 1: boardSize = 5; break;
-                                case 2: boardSize = 8; break;
-                                case 3: boardSize = 12; break;
-                            }
+                            boardSize = stoi(string(entries[selection].getString()));
                             startGame();
                             break;
                         case Keyboard::Escape:
