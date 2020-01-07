@@ -19,7 +19,7 @@ void drawLinks(int i, int j){
 
         // build link shape and draw it
         RectangleShape link(Vector2f(colDist, linkWidth));
-        link.setPosition((j - 1) * (colDist / 2) + circleRadius, i * (rowDist / 2) + circleRadius);
+        link.setPosition((j - 1) * (colDist / 2) + circleRadius, i * (rowDist / 2) + circleRadius - linkWidth / 2);
         link.setFillColor(culoare);
         window.draw(link);
     }
@@ -29,7 +29,7 @@ void drawLinks(int i, int j){
 
         // build link shape and draw
         RectangleShape link(Vector2f(linkWidth, rowDist));
-        link.setPosition(j * (colDist / 2) + circleRadius, (i - 1) * (rowDist / 2) + circleRadius);
+        link.setPosition(j * (colDist / 2) + circleRadius - linkWidth / 2, (i - 1) * (rowDist / 2) + circleRadius);
         link.setFillColor(culoare);
         window.draw(link);
     }
