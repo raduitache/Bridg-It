@@ -15,3 +15,4 @@ bool isClickValid(sf::Event::MouseButtonEvent mouse);
 
 void linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2);
 
+unsigned gameOver(bool player);

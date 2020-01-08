@@ -50,6 +50,7 @@ void linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent
         if(abs(y1 - y2) == 2){
             if(board[(y1 + y2) / 2][x1] == '0'){
                 board[(y1 + y2) / 2][x1] = '0' + playerRound + 1;
+                gameOver(playerRound);
                 playerRound = !playerRound;
             }
         }
@@ -58,11 +59,12 @@ void linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent
         if(abs(x1 - x2) == 2){
             if(board[y1][(x1 + x2) / 2] == '0'){
                 board[y1][(x1 + x2) / 2] = '0' + playerRound + 1;
+                gameOver(playerRound);
                 playerRound = !playerRound;
             }
         }
     }
-    printBoard();
+    //printBoard();
 }
 
 void createBoard(){
@@ -97,4 +99,7 @@ int getSizeFromStr(string s){
     catch(int e){
         return -1;
     }
+}
+unsigned gameOver(bool player){
+
 }
