@@ -36,6 +36,8 @@
 		<Unit filename="Backend.hpp" />
 		<Unit filename="UI.cpp" />
 		<Unit filename="UI.hpp" />
+		<Unit filename="dataStructures.cpp" />
+		<Unit filename="dataStructures.hpp" />
 		<Unit filename="globalVars.cpp" />
 		<Unit filename="globalVars.hpp" />
 		<Unit filename="macros.hpp" />

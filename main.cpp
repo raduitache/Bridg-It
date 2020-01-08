@@ -1,6 +1,7 @@
 #include "Backend.hpp"
 #include "UI.hpp"
 #include "globalVars.hpp"
+#include "dataStructures.hpp"
 
 using namespace std;
 
@@ -12,10 +13,10 @@ int main()
 
 
     //gameOptionsMenu();
-     Meniusetup();
+    //Meniusetup();
     //centerscreen(meniu);
-     //dificultyMeniu();
-     // numberOfPlayerMenu();
+    //dificultyMeniu();
+    // numberOfPlayerMenu();
 
 
     return 0;
