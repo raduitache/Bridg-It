@@ -1,3 +1,6 @@
+#ifndef DATASTRUCTURES_H
+#define DATASTRUCTURES_H
+
 struct obj{
     int val;
     obj *next, *prev;
@@ -25,3 +28,5 @@ void push(queue &q, int v);
 void pop(stack &s);
 
 void pop(queue &q);
+
+#endif // DATASTRUCTURES_H

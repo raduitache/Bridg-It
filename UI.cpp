@@ -281,7 +281,7 @@ void linkDots(sf::Event::MouseButtonEvent mouse){
                     window.close();
                 if (event.type == sf::Event::MouseButtonPressed){
                     if(event.mouseButton.button == sf::Mouse::Left){
-                        linkIfValid(mouse, event.mouseButton);
+                        cout << " this time " << linkIfValid(mouse, event.mouseButton) << endl;
                         return;
                     }
                 }
