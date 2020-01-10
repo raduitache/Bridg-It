@@ -12,10 +12,10 @@ int main()
 
 
     //gameOptionsMenu();
-     Meniusetup();
+    Meniusetup();
     //centerscreen(meniu);
-     //dificultyMeniu();
-     // numberOfPlayerMenu();
+    //dificultyMeniu();
+    // numberOfPlayerMenu();
 
 
     return 0;

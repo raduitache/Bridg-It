@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include "macros.hpp"
 #include "globalVars.hpp"
+#include "dataStructures.hpp"
 
 using namespace std;
 
@@ -13,5 +14,8 @@ int getSizeFromStr(string s);
 
 bool isClickValid(sf::Event::MouseButtonEvent mouse);
 
-void linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2);
+unsigned linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2);
 
+unsigned gameOver(bool player);
+
+bool BFS(queue &q, bool player);

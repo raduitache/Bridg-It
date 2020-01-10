@@ -19,7 +19,7 @@ void drawLinks(int i, int j){
 
         // build link shape and draw it
         RectangleShape link(Vector2f(colDist, linkWidth));
-        link.setPosition((j - 1) * (colDist / 2) + circleRadius, i * (rowDist / 2) + circleRadius);
+        link.setPosition((j - 1) * (colDist / 2) + circleRadius, i * (rowDist / 2) + circleRadius - linkWidth / 2);
         link.setFillColor(culoare);
         window.draw(link);
     }
@@ -29,7 +29,7 @@ void drawLinks(int i, int j){
 
         // build link shape and draw
         RectangleShape link(Vector2f(linkWidth, rowDist));
-        link.setPosition(j * (colDist / 2) + circleRadius, (i - 1) * (rowDist / 2) + circleRadius);
+        link.setPosition(j * (colDist / 2) + circleRadius - linkWidth / 2, (i - 1) * (rowDist / 2) + circleRadius);
         link.setFillColor(culoare);
         window.draw(link);
     }
@@ -158,24 +158,34 @@ void Meniusetup(){
 
 void setGameOptionsMenuEntities(Text entries[], Font &myFont, int selection){
     // set stuff that is the same for all text entries
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 4; i++){
         entries[i].setCharacterSize(textSize);
         entries[i].setColor(textColor);
         entries[i].setFont(myFont);
     }
     entries[selection].setColor(selectedTextColor);
 
+
+    // maximum size of the board, considering the screen resolution
+    int maxBoardSize = floor((VideoMode::getDesktopMode().height - 2 * circleRadius) / rowDist);
+
     // set individual characteristics;
     entries[0].setString("Choose the board size");
     entries[0].setStyle(Text::Bold | Text::Underlined);
     entries[1].setString("5 x 5 Board");
     entries[2].setString("8 x 8 Board");
-    entries[3].setString("Insert custom board size");
-    entries[4].setString("Play!");
+
+    // prevent having two identical options
+    if(maxBoardSize <= 8){
+        entries[1].setString("3 x 3 Board");
+        entries[2].setString("5 x 5 Board");
+    }
+    entries[3].setString(to_string(maxBoardSize) + " x " + to_string(maxBoardSize) + " Board");
+
 
     // positioning of all
-    for(int i = 0; i < 5; i++){
-        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+    for(int i = 0; i < 4; i++){
+        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 4));
     }
 }
 
@@ -199,12 +209,12 @@ void gameOptionsMenu(){
     window.create(VideoMode(800, 600), "Bridg-It");
 
     // the text that will server as buttons, and the font for it
-    Text entries[5];
+    Text entries[4];
     Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
 
     // set how many options we use
-    int dim = 5;
+    int dim = 4;
 
 
     // this will let us know which option is selected, and what to highlight
@@ -223,7 +233,7 @@ void gameOptionsMenu(){
                 case Event::Resized:
                 {
                     // don't allow it to be too small for the text to be seen
-                    if (window.getSize().y < 5 * (textSize + textPadding)) window.setSize(Vector2u(window.getSize().x, unsigned(5 * (textSize + textPadding))));
+                    if (window.getSize().y < 4 * (textSize + textPadding)) window.setSize(Vector2u(window.getSize().x, unsigned(4 * (textSize + textPadding))));
 
                     // adjust the view to the new window size, so the image doesn't appear stretched
                     sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
@@ -242,11 +252,7 @@ void gameOptionsMenu(){
                             moveDown(selection, entries, dim);
                             break;
                         case Keyboard::Enter:
-                            switch(selection){
-                                case 1: boardSize = 5; break;
-                                case 2: boardSize = 8; break;
-
-                            }
+                            boardSize = stoi(string(entries[selection].getString()));
                             startGame();
                             break;
                         case Keyboard::Escape:
@@ -257,7 +263,7 @@ void gameOptionsMenu(){
             }
         }
         window.clear();
-        for(int i = 0; i < 5; i++) window.draw(entries[i]);
+        for(int i = 0; i < 4; i++) window.draw(entries[i]);
         window.display();
     }
 }
@@ -275,7 +281,7 @@ void linkDots(sf::Event::MouseButtonEvent mouse){
                     window.close();
                 if (event.type == sf::Event::MouseButtonPressed){
                     if(event.mouseButton.button == sf::Mouse::Left){
-                        linkIfValid(mouse, event.mouseButton);
+                        cout << " this time " << linkIfValid(mouse, event.mouseButton) << endl;
                         return;
                     }
                 }
