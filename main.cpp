@@ -6,18 +6,11 @@ using namespace std;
 
 using namespace sf;
 
-int main()
-{
-    //startGame();
+int main(){
 
-
-    //gameOptionsMenu();
     Meniusetup();
-    //centerscreen(meniu);
-    //dificultyMeniu();
-    // numberOfPlayerMenu();
-
 
     return 0;
+
 }
 
