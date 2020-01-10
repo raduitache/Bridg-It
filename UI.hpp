@@ -26,8 +26,10 @@ void setGameOptionsMenuEntities(Text entries[], Font &myFont, int selection);
 
 void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[], Font &myFont);
 
-void linkDots(sf::Event::MouseButtonEvent mouse);
+unsigned linkDots(sf::Event::MouseButtonEvent mouse);
 
 void dificultyMenu();
 
 void numberOfPlayerMenu();
+
+void showWinner(unsigned u);
