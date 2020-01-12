@@ -100,7 +100,7 @@ void eventEnter(int &selection){
     if(selection==1)
         numberOfPlayerMenu();
     if(selection==2)
-        numberOfPlayerMenu();
+        settingsMenu();
     if(selection==4)
         window.close();
 
@@ -542,3 +542,79 @@ void showWinner(unsigned u){
     }
 }
 
+void setSettingsMenuEntries(Text entries[], Font &font, int &selection){
+    font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    for(int i = 0; i < 5; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setColor(Color::Red);
+        entries[i].setFont(font);
+    }
+    entries[selection].setColor(Color::White);
+
+    entries[0].setString("Settings");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[1].setString("Music");
+    entries[2].setString("Player colors");
+    entries[3].setString("Font");
+    entries[4].setString("Back");
+
+    // positioning of all
+    for(int i = 0; i < 5; i++)
+    {
+        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+    }
+}
+
+void settingsMenu(){
+
+    window.create(sf::VideoMode(800,600), "Bridg-It");
+
+    int selection = 1, dim = 5;
+    Text entries[dim];
+    Font myFont;
+
+    setSettingsMenuEntries(entries, myFont, selection);
+    while(window.isOpen())
+    {
+        Event event;
+        while(window.pollEvent(event))
+        {
+            switch(event.type)
+            {
+            case Event::Closed:
+                window.close();
+                break;
+
+            case Event::Resized:
+            {
+
+                // adjust the view to the new window size, so the image doesn't appear stretched
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+
+                // keep the elements of the window responsive
+                setSettingsMenuEntries(entries, myFont, selection);
+                break;
+            }
+            case Event::KeyPressed:
+                switch(event.key.code)
+                {
+                case Keyboard::Up:
+                    moveUp(selection, entries);
+                    break;
+                case Keyboard::Down:
+                    moveDown(selection, entries, dim);
+                    break;
+                case Keyboard::Escape:
+                    Meniusetup();
+                    break;
+                }
+                break;
+            }
+        }
+        window.clear();
+        for(int i = 0; i < 5; i++)
+            window.draw(entries[i]);
+        window.display();
+    }
+}

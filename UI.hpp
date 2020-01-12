@@ -33,3 +33,7 @@ void dificultyMenu();
 void numberOfPlayerMenu();
 
 void showWinner(unsigned u);
+
+void settingsMenu();
+
+void setSettingsMenuEntries(Text entries[], Font &font, int &selection);
