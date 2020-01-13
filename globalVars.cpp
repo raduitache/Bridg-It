@@ -5,3 +5,5 @@ int boardSize;
 char **board;
 sf::RenderWindow window;
 bool playerRound = 0;
+
+bool isMuted;

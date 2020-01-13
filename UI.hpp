@@ -36,4 +36,8 @@ void showWinner(unsigned u);
 
 void settingsMenu();
 
-void setSettingsMenuEntries(Text entries[], Font &font, int &selection);
+void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox, Image &ticked, Image &unticked);
+
+void selectFontMenu();
+
+void selectPlayerColorsMenu();

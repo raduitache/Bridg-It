@@ -272,7 +272,7 @@ void gameOptionsMenu(){
                 setGameOptionsMenuEntities(entries, myFont, selection);
                 break;
             }
-            case Event::KeyPressed:
+            case Event::KeyReleased:
                 switch(event.key.code)
                 {
                 case Keyboard::Up:
@@ -474,7 +474,7 @@ void numberOfPlayerMenu(){
         {
             switch(event.type)
             {
-            case sf::Event::KeyPressed:
+            case sf::Event::KeyReleased:
 
                 switch(event.key.code)
                 {
@@ -542,21 +542,42 @@ void showWinner(unsigned u){
     }
 }
 
-void setSettingsMenuEntries(Text entries[], Font &font, int &selection){
+void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox, Image &ticked, Image &unticked){
+
+    // get font
     font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+
+    // set the common properties for the text values
     for(int i = 0; i < 5; i++){
         entries[i].setCharacterSize(textSize);
         entries[i].setColor(Color::Red);
         entries[i].setFont(font);
     }
+
+    // highlight the selection
     entries[selection].setColor(Color::White);
 
+    // set individual properties
     entries[0].setString("Settings");
     entries[0].setStyle(Text::Bold | Text::Underlined);
     entries[1].setString("Music");
     entries[2].setString("Player colors");
     entries[3].setString("Font");
     entries[4].setString("Back");
+
+    // depending on whether we'll have sound or not, we tick the box or untick it
+    if(isMuted)
+        myTick.loadFromImage(unticked);
+    else
+        myTick.loadFromImage(ticked);
+
+    // little settings for the sprite to look good, and some positioning
+    myTick.setSmooth(true);
+    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().getSize().y, entries[1].getGlobalBounds().getSize().y);
+    checkBox.setSize(checkBoxSize);
+    checkBox.setTexture(&myTick);
+    checkBox.setPosition(entries[1].getPosition().x - 2 * checkBox.getSize().x, entries[1].getPosition().y + checkBox.getSize().y / 2);
+    checkBox.setFillColor(Color::Red);
 
     // positioning of all
     for(int i = 0; i < 5; i++)
@@ -572,8 +593,14 @@ void settingsMenu(){
     int selection = 1, dim = 5;
     Text entries[dim];
     Font myFont;
+    Texture myTick;
+    Image ticked, unticked;
+    RectangleShape checkBox;
 
-    setSettingsMenuEntries(entries, myFont, selection);
+    ticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "ticked.png");
+    unticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "unticked.png");
+
+    setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox, ticked, unticked);
     while(window.isOpen())
     {
         Event event;
@@ -593,10 +620,10 @@ void settingsMenu(){
                 window.setView(sf::View(visibleArea));
 
                 // keep the elements of the window responsive
-                setSettingsMenuEntries(entries, myFont, selection);
+                setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox, ticked, unticked);
                 break;
             }
-            case Event::KeyPressed:
+            case Event::KeyReleased:
                 switch(event.key.code)
                 {
                 case Keyboard::Up:
@@ -608,6 +635,21 @@ void settingsMenu(){
                 case Keyboard::Escape:
                     Meniusetup();
                     break;
+                case Keyboard::Enter:
+                    switch(selection){
+                    case 1:
+                        isMuted = !isMuted;
+                        setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox, ticked, unticked);
+                        break;
+                    case 2:
+                        selectPlayerColorsMenu();
+                        break;
+                    case 3:
+                        selectFontMenu();
+                        break;
+                    default:
+                        Meniusetup();
+                    }
                 }
                 break;
             }
@@ -615,6 +657,15 @@ void settingsMenu(){
         window.clear();
         for(int i = 0; i < 5; i++)
             window.draw(entries[i]);
+        window.draw(checkBox);
         window.display();
     }
+}
+
+void selectPlayerColorsMenu(){
+
+}
+
+void selectFontMenu(){
+
 }

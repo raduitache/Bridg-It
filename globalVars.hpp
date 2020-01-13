@@ -5,3 +5,4 @@ extern int boardSize;
 extern char **board;
 extern sf::RenderWindow window;
 extern bool playerRound;
+extern bool isMuted;
