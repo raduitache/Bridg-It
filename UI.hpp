@@ -36,8 +36,16 @@ void showWinner(unsigned u);
 
 void settingsMenu();
 
-void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox, Image &ticked, Image &unticked);
+void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox);
 
 void selectFontMenu();
 
+void setSelectPlayerColorsMenu(Text entries[], RectangleShape colorOptions[][3], Font &font);
+
+void drawColors(RectangleShape colorOptions[][3], bool player, Text title);
+
 void selectPlayerColorsMenu();
+
+void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[][3], Text entries[]);
+
+void resetBackGround();

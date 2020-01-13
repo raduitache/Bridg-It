@@ -2,18 +2,24 @@
 
 using namespace sf;
 
+void resetBackGround(){
+    Vector2<float> bgSize(window.getSize().x, window.getSize().y);
+    backGround.setSize(bgSize);
+    backGround.setFillColor(backGroundColor);
+}
+
 void drawLinks(int i, int j){
     char player;
     Color culoare;
     if(board[i][j] == '1')
     {
         player = 'x';
-        culoare = Color::White;
+        culoare = player1Color;
     }
     else if(board[i][j] == '2')
     {
         player = 'y';
-        culoare = Color::Red;
+        culoare = player2Color;
     }
     else
         return;
@@ -42,9 +48,13 @@ void drawLinks(int i, int j){
 }
 
 void loadBoard(){
+
+    resetBackGround();
+    window.draw(backGround);
     CircleShape shape(circleRadius);
 
     // load the first player's dots
+    shape.setFillColor(player1Color);
     for(int i = 0; i < boardSize; i++)
     {
         for(int j = 1; j < boardSize; j++)
@@ -55,7 +65,7 @@ void loadBoard(){
     }
 
     // load the second player's pieces
-    shape.setFillColor(Color::Red);
+    shape.setFillColor(player2Color);
     for(int i = 1; i < boardSize; i++)
     {
         for(int j = 0; j < boardSize; j++)
@@ -81,18 +91,18 @@ void loadBoard(){
 void moveUp(int &selection,Text entries[]){
     if(selection-1>0)
     {
-        entries[selection].setColor(sf::Color::Red);
+        entries[selection].setColor(player2Color);
         selection--;
-        entries[selection].setColor(sf::Color::White);
+        entries[selection].setColor(player1Color);
     }
 }
 
 void moveDown(int &selection,Text entries[],int dimensions){
     if(selection+1<dimensions)
     {
-        entries[selection].setColor(sf::Color::Red);
+        entries[selection].setColor(player2Color);
         selection++;
-        entries[selection].setColor(sf::Color::White);
+        entries[selection].setColor(player1Color);
     }
 }
 
@@ -110,13 +120,14 @@ void eventEnter(int &selection){
 void Meniusetup(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
 
+    resetBackGround();
     Text entries[5];
     Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
     for(int i = 0; i < 5; i++)
     {
         entries[i].setCharacterSize(textSize);
-        entries[i].setColor(textColor);
+        entries[i].setColor(player2Color);
         entries[i].setFont(myFont);
     }
     entries[0].setString("WELCOME");
@@ -127,7 +138,7 @@ void Meniusetup(){
     entries[4].setString("Exit");
     int dimension=5;
     int selection=1;
-    entries[1].setColor(sf::Color::White);
+    entries[1].setColor(player1Color);
     for(int i = 0; i < 5; i++)
     {
         entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
@@ -163,6 +174,7 @@ void Meniusetup(){
 
         }
         window.clear();
+        window.draw(backGround);
         for(int i = 0; i < 5; i++)
             window.draw(entries[i]);
         window.display();
@@ -171,14 +183,16 @@ void Meniusetup(){
 }
 
 void setGameOptionsMenuEntities(Text entries[], Font &myFont, int selection){
+
+    resetBackGround();
     // set stuff that is the same for all text entries
     for(int i = 0; i < 4; i++)
     {
         entries[i].setCharacterSize(textSize);
-        entries[i].setColor(textColor);
+        entries[i].setColor(player2Color);
         entries[i].setFont(myFont);
     }
-    entries[selection].setColor(selectedTextColor);
+    entries[selection].setColor(player1Color);
 
 
     // maximum size of the board, considering the screen resolution
@@ -293,6 +307,7 @@ void gameOptionsMenu(){
             }
         }
         window.clear();
+        window.draw(backGround);
         for(int i = 0; i < 4; i++)
             window.draw(entries[i]);
         window.display();
@@ -365,13 +380,15 @@ void startGame(){
 void dificultyMenu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
 
+    resetBackGround();
+
     Text entries[4];
     Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
     for(int i = 0; i < 4; i++)
     {
         entries[i].setCharacterSize(textSize);
-        entries[i].setColor(textColor);
+        entries[i].setColor(player2Color);
         entries[i].setFont(myFont);
     }
 
@@ -388,7 +405,7 @@ void dificultyMenu(){
     }
     int selection=1;
     int dimension=4;
-    entries[1].setColor(sf::Color::White);
+    entries[1].setColor(player1Color);
 
     while(window.isOpen())
     {
@@ -421,6 +438,7 @@ void dificultyMenu(){
                 window.close();
         }
         window.clear();
+        window.draw(backGround);
         for(int i = 0; i < 4; i++)
             window.draw(entries[i]);
         window.display();
@@ -439,13 +457,16 @@ void eventEnter1(int &selection,Text entries[]){
 
 void numberOfPlayerMenu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
+
+    resetBackGround();
+
     Text entries[3];
     Font myFont;
     myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
     for(int i = 0; i < 3; i++)
     {
         entries[i].setCharacterSize(textSize);
-        entries[i].setColor(textColor);
+        entries[i].setColor(player2Color);
         entries[i].setFont(myFont);
     }
 
@@ -464,7 +485,7 @@ void numberOfPlayerMenu(){
     }
     int selection=1;
     int dimension=3;
-    entries[1].setColor(sf::Color::White);
+    entries[1].setColor(player1Color);
 
     while(window.isOpen())
     {
@@ -500,6 +521,7 @@ void numberOfPlayerMenu(){
 
         }
         window.clear();
+        window.draw(backGround);
         for(int i = 0; i < 3; i++)
             window.draw(entries[i]);
         window.display();
@@ -514,11 +536,11 @@ void showWinner(unsigned u){
         return;
     Text winnerText;
     if(u == 1){
-        winnerText.setColor(Color::White);
+        winnerText.setColor(player1Color);
         winnerText.setString("Player 1 won!");
     }
     else{
-        winnerText.setColor(Color::Red);
+        winnerText.setColor(player2Color);
         winnerText.setString("Player 2 won!");
     }
     Font textFont;
@@ -526,7 +548,8 @@ void showWinner(unsigned u){
     winnerText.setFont(textFont);
     winnerText.setCharacterSize(window.getSize().y / winnerText.getString().getSize() * 2);
     RectangleShape focusRect;
-    focusRect.setFillColor(Color(0, 0, 0, 200));
+    Color newCol(44, 47, 51, 80);
+    focusRect.setFillColor(newCol);
     winnerText.setPosition((window.getSize().x - winnerText.getGlobalBounds().width) / 2, (window.getSize().y - winnerText.getGlobalBounds().height) / 2);
     Vector2f windowSize;
     windowSize.x = float(window.getSize().x);
@@ -542,7 +565,9 @@ void showWinner(unsigned u){
     }
 }
 
-void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox, Image &ticked, Image &unticked){
+void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox){
+
+    resetBackGround();
 
     // get font
     font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
@@ -550,12 +575,12 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
     // set the common properties for the text values
     for(int i = 0; i < 5; i++){
         entries[i].setCharacterSize(textSize);
-        entries[i].setColor(Color::Red);
+        entries[i].setColor(player2Color);
         entries[i].setFont(font);
     }
 
     // highlight the selection
-    entries[selection].setColor(Color::White);
+    entries[selection].setColor(player1Color);
 
     // set individual properties
     entries[0].setString("Settings");
@@ -577,7 +602,7 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
     checkBox.setSize(checkBoxSize);
     checkBox.setTexture(&myTick);
     checkBox.setPosition(entries[1].getPosition().x - 2 * checkBox.getSize().x, entries[1].getPosition().y + checkBox.getSize().y / 2);
-    checkBox.setFillColor(Color::Red);
+    checkBox.setFillColor(player2Color);
 
     // positioning of all
     for(int i = 0; i < 5; i++)
@@ -594,13 +619,12 @@ void settingsMenu(){
     Text entries[dim];
     Font myFont;
     Texture myTick;
-    Image ticked, unticked;
     RectangleShape checkBox;
 
     ticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "ticked.png");
     unticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "unticked.png");
 
-    setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox, ticked, unticked);
+    setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
     while(window.isOpen())
     {
         Event event;
@@ -620,7 +644,7 @@ void settingsMenu(){
                 window.setView(sf::View(visibleArea));
 
                 // keep the elements of the window responsive
-                setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox, ticked, unticked);
+                setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                 break;
             }
             case Event::KeyReleased:
@@ -639,7 +663,7 @@ void settingsMenu(){
                     switch(selection){
                     case 1:
                         isMuted = !isMuted;
-                        setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox, ticked, unticked);
+                        setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                         break;
                     case 2:
                         selectPlayerColorsMenu();
@@ -655,6 +679,7 @@ void settingsMenu(){
             }
         }
         window.clear();
+        window.draw(backGround);
         for(int i = 0; i < 5; i++)
             window.draw(entries[i]);
         window.draw(checkBox);
@@ -662,8 +687,139 @@ void settingsMenu(){
     }
 }
 
-void selectPlayerColorsMenu(){
+void setSelectPlayerColorsMenu(Text entries[], RectangleShape colorOptions[][3], Font &font){
 
+    resetBackGround();
+
+    // setting the text
+    entries[0].setString("Choose player colors");
+    entries[1].setString("Player 1");
+    entries[2].setString("Player 2");
+    entries[3].setString("Back");
+
+    // choose font and assign it
+    font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+
+    // set font and character size for all text
+    for(int i = 0; i < 4; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setFont(font);
+    }
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+
+    // set the position and color for the text
+    // place it right at the top, in the middle of the window
+    entries[0].setPosition((window.getSize().x - entries[0].getGlobalBounds().width) / 2, 0.f);
+    entries[0].setFillColor(player2Color);
+
+    // right under where the colors will be, centered in the first half of the window
+    entries[1].setPosition((window.getSize().x / 2 - entries[1].getGlobalBounds().width) / 2, window.getSize().y / 2 + 2 * entries[0].getGlobalBounds().height);
+    entries[1].setFillColor(player1Color);
+    // aligned somewhat like the one before, just centered in the second half of the window
+    entries[2].setPosition(( 3 * window.getSize().x / 2 - entries[1].getGlobalBounds().width) / 2, window.getSize().y / 2 + 2 * entries[0].getGlobalBounds().height);
+    entries[2].setFillColor(player2Color);
+
+    // place it in the middle of the remaining space
+    float spaceAfterEntities = 2 * entries[0].getGlobalBounds().height + window.getSize().y / 2 + entries[1].getGlobalBounds().height;
+    entries[3].setPosition((window.getSize().x - entries[3].getGlobalBounds().width) / 2, spaceAfterEntities + (window.getSize().y - spaceAfterEntities- entries[3].getGlobalBounds().height) / 2);
+    entries[3].setFillColor(player1Color);
+    // set the colors for picking:
+    colorOptions[0][0].setFillColor(Color::Black);
+    colorOptions[0][1].setFillColor(Color::White);
+    colorOptions[0][2].setFillColor(Color::Yellow);
+    colorOptions[1][0].setFillColor(Color::Green);
+    colorOptions[1][1].setFillColor(Color::Blue);
+    colorOptions[1][2].setFillColor(Color::Cyan);
+    colorOptions[2][0].setFillColor(Color::Magenta);
+    colorOptions[2][1].setFillColor(Color::Red);
+    colorOptions[2][2].setFillColor(Color(255, 165, 0));
+
+    // set each rectangle's size
+    Vector2<float> newSize(window.getSize().x / 6, window.getSize().y / 6);
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            colorOptions[i][j].setSize(newSize);
+        }
+    }
+}
+
+void drawColors(RectangleShape colorOptions[][3], bool player, Text title){
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            colorOptions[i][j].setPosition(player * window.getSize().x / 2 + j * window.getSize().x / 6, 2 * title.getGlobalBounds().height + i * window.getSize().y / 6);
+            window.draw(colorOptions[i][j]);
+        }
+    }
+}
+
+void selectPlayerColorsMenu(){
+    window.create(VideoMode(600, 800), "Bridg-It");
+    Font font;
+    Text entries[4];
+    RectangleShape colorOptions[3][3];
+    setSelectPlayerColorsMenu(entries, colorOptions, font);
+    while(window.isOpen()){
+        Event event;
+        while(window.pollEvent(event)){
+            switch(event.type){
+            case Event::Closed:
+                window.close();
+                settingsMenu();
+                break;
+            case Event::KeyReleased:
+                switch(event.key.code){
+                case Keyboard::Enter:
+                    window.close();
+                    settingsMenu();
+                    break;
+                case Keyboard::Escape:
+                    window.close();
+                    settingsMenu();
+                }
+                break;
+            case Event::Resized:
+            {
+
+                // adjust the view to the new window size, so the image doesn't appear stretched
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+
+                // keep the elements of the window responsive
+                setSelectPlayerColorsMenu(entries, colorOptions, font);
+                break;
+            }
+            case Event::MouseButtonPressed:
+                pickColor(event.mouseButton, colorOptions, entries);
+                setSelectPlayerColorsMenu(entries, colorOptions, font);
+            }
+        }
+        window.clear();
+        window.draw(backGround);
+        for(int i = 0; i < 4; i++)
+            window.draw(entries[i]);
+        drawColors(colorOptions, 0, entries[0]);
+        drawColors(colorOptions, 1, entries[0]);
+        window.display();
+    }
+}
+
+void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[][3], Text entries[]){
+    if(mousebutton.button == Mouse::Left){
+
+        // check if we're selecting a color
+        if(mousebutton.y > 2 * entries[0].getGlobalBounds().height && mousebutton.y < 2 * entries[0].getGlobalBounds().height + window.getSize().y / 2){
+
+            // see if it's for the first player
+            if(mousebutton.x < window.getSize().x / 2 && player2Color != colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int(mousebutton.x / colorOptions[0][0].getSize().x)].getFillColor()){
+                player1Color = colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int(mousebutton.x / colorOptions[0][0].getSize().x)].getFillColor();
+            }
+            else if(mousebutton.x > window.getSize().x / 2 && player1Color != colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int((mousebutton.x - window.getSize().x / 2) / colorOptions[0][0].getSize().x)].getFillColor()){
+                player2Color = colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int((mousebutton.x - window.getSize().x / 2) / colorOptions[0][0].getSize().x)].getFillColor();
+            }
+        }
+        if(mousebutton.y > entries[3].getGlobalBounds().getPosition().y)
+            settingsMenu();
+    }
 }
 
 void selectFontMenu(){
