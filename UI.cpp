@@ -563,7 +563,17 @@ void showWinner(unsigned u){
     windowSize.y = float(window.getSize().y);
     focusRect.setSize(windowSize);
     Clock clock;
+    music.stop();
+    winSound.play();
     while(clock.getElapsedTime().asSeconds() < 5.0f){
+
+        Event event;
+        while(window.pollEvent(event)){
+            if(event.type == Event::Closed || event.type == Event::KeyPressed){
+                window.close();
+                return;
+            }
+        }
         window.clear();
         loadBoard();
         window.draw(focusRect);

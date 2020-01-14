@@ -2,13 +2,13 @@
 
 int boardSize;
 char **board;
-sf::Sound firstClickSound, secondClickSound;
+sf::Sound firstClickSound, secondClickSound, winSound;
 sf::Music music;
-sf::SoundBuffer soundBuffer;
+sf::SoundBuffer clickSoundBuffer, winSoundBuffer;
 sf::RenderWindow window;
 sf::RectangleShape backGround;
 sf::Image ticked, unticked;
-sf::Color backGroundColor, player1Color = sf::Color::White, player2Color = sf::Color::Red;
+sf::Color backGroundColor, player1Color, player2Color;
 bool playerRound = 0;
-bool isMuted = 0;
+bool isMuted;
 std::string fontPath;

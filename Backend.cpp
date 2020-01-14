@@ -247,14 +247,41 @@ bool BFS(queue &q, bool player){
 }
 
 void setPrerequisites(){
+    fstream f;
+    f.open("conf.ini", fstream::in);
+
+    // first thing should be the boolean value for this
+    f >> isMuted;
+
+    // we'll need some values for the rgb code
+    int r, g, b;
+
+    // we'll have the colors stored as rgb codes, as it's easier to parse. The codes for the first player
+    f >> r >> g >> b;
+    player1Color = sf::Color(r, g, b);
+
+    // and the same for the second
+    f >> r >> g >> b;
+    player2Color = sf::Color(r, g, b);
+
+    // and finally a string for the font
+    fontPath = "Assets" pathSeparator "Fonts" pathSeparator;
+    string s;
+    f >> s;
+    fontPath += s;
+
+    // and we'll be closing the stream now
+    f.close();
+
     music.openFromFile("Assets" pathSeparator "Sounds" pathSeparator "backGroundMusic.ogg");
+    clickSoundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "pop.flac");
+    winSoundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "win.wav");
     music.setLoop(true);
-    soundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "pop.flac");
-    firstClickSound.setBuffer(soundBuffer);
-    secondClickSound.setBuffer(soundBuffer);
+    firstClickSound.setBuffer(clickSoundBuffer);
+    secondClickSound.setBuffer(clickSoundBuffer);
+    winSound.setBuffer(winSoundBuffer);
     secondClickSound.setPitch(1.2f);
     backGroundColor = sf::Color(44, 47, 51);
-    fontPath = "Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf";
     if(isMuted == 0)
         music.play();
 }
@@ -292,5 +319,12 @@ void setFonts(string entries[], int n){
 }
 
 void saveSettings(){
-
+    fstream f;
+    f.open("conf.ini", fstream::out);
+    f << isMuted << endl;
+    unsigned p1 = player1Color.toInteger();
+    unsigned p2 = player2Color.toInteger();
+    f << (p1 >> 24) << " " << ((p1 << 8) >> 24) << " " << ((p1 << 16) >> 24) << endl;
+    f << (p2 >> 24) << " " << ((p2 << 8) >> 24) << " " << ((p2 << 16) >> 24) << endl;
+    f << fontPath.substr(fontPath.rfind(pathSeparator) + 1) << endl;
 }

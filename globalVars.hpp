@@ -4,9 +4,9 @@
 
 extern int boardSize;
 extern char **board;
-extern sf::Sound firstClickSound, secondClickSound;
+extern sf::Sound firstClickSound, secondClickSound, winSound;
 extern sf::Music music;
-extern sf::SoundBuffer soundBuffer;
+extern sf::SoundBuffer clickSoundBuffer, winSoundBuffer;
 extern sf::RenderWindow window;
 extern sf::Color backGroundColor, player1Color, player2Color;
 extern sf::RectangleShape backGround;
