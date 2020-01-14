@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 extern int boardSize;
+extern int pcActive;
 extern char **board;
 extern sf::Sound firstClickSound, secondClickSound, winSound;
 extern sf::Music music;

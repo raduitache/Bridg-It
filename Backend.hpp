@@ -19,6 +19,8 @@ bool isClickValid(sf::Event::MouseButtonEvent mouse);
 
 unsigned linkIfValid(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2);
 
+unsigned playerMove(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2);
+
 unsigned gameOver(bool player);
 
 bool BFS(queue &q, bool player);

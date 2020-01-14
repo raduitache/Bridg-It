@@ -51,3 +51,7 @@ void selectPlayerColorsMenu();
 void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[][3], Text entries[]);
 
 void resetBackGround();
+
+void easyMode();
+
+void mediumMode();

@@ -1,6 +1,7 @@
 #include "globalVars.hpp"
 
 int boardSize;
+int pcActive;
 char **board;
 sf::Sound firstClickSound, secondClickSound, winSound;
 sf::Music music;

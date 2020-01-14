@@ -246,6 +246,69 @@ void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[],
         selection = currentSelection;
 }
 
+void miscarePc(){
+     int ok=0;
+
+    for(int i=1;i<boardSize+1&&!ok;i++)
+        for(int j=0;j<boardSize+1&&!ok;j++)
+            if(board[i][j]=='0')
+            {
+                board[i][j]='0'+2;
+                ok=1;
+            }
+}
+
+void easyMode(){
+
+     createBoard();
+     window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
+      while(window.isOpen())
+    {
+
+           Event event;
+           while(window.pollEvent(event))
+           {
+
+                if (event.type == sf::Event::MouseButtonPressed)
+                    {
+
+                              if(event.mouseButton.button == sf::Mouse::Left)
+                                   {
+                                       if(!playerRound)
+                                       {
+                            unsigned s = linkDots(event.mouseButton);
+                             showWinner(s);
+                          if(s != 0)
+                            window.close();
+                                       }
+                                       else
+                        if(playerRound)
+                     {
+                          miscarePc();
+                           showWinner(gameOver(1));
+                             playerRound=!playerRound;
+
+                     }
+
+
+                                   }
+                    }
+
+
+
+
+                    if (event.type == sf::Event::Closed)
+                    window.close();
+           }
+
+
+           window.clear();
+       loadBoard();
+        window.display();
+      }
+
+}
+
 void gameOptionsMenu(){
 
     window.create(VideoMode(800, 600), "Bridg-It");
@@ -300,8 +363,14 @@ void gameOptionsMenu(){
                     break;
                 case Keyboard::Enter:
                     boardSize = stoi(string(entries[selection].getString()));
-                    startGame();
+                    if(pcActive == 0)
+                       startGame();
+                    else if(pcActive == 1)
+                        easyMode();
+                    else
+                        //mediumMode();
                     break;
+
                 case Keyboard::Escape:
                     numberOfPlayerMenu();
                     break;
@@ -438,6 +507,9 @@ void dificultyMenu(){
                 case sf::Keyboard::Escape:
                     numberOfPlayerMenu();
                     break;
+                case sf::Keyboard::Enter:
+                    pcActive = selection;
+                    gameOptionsMenu();
                 }
                 break;
             }
@@ -455,8 +527,10 @@ void dificultyMenu(){
 }
 
 void eventEnter1(int &selection,Text entries[]){
-    if(selection==1)
+    if(selection==1){
+        pcActive = 0;
         gameOptionsMenu();
+    }
     if(selection==2)
         dificultyMenu();
 
@@ -846,7 +920,7 @@ void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[
 void setSelectFontMenuEntries(string fonts[], Text entries[], int numOfFonts, int selection, Font &font, View &titleView, View &fontsView){
 
 
-    resetBackGround();
+
 
     // set the title's properties
     entries[0].setString("Choose font");
@@ -855,6 +929,10 @@ void setSelectFontMenuEntries(string fonts[], Text entries[], int numOfFonts, in
     entries[0].setFont(font);
     entries[0].setPosition((window.getSize().x - entries[0].getGlobalBounds().width) / 2, window.getSize().y / 2 - entries[0].getGlobalBounds().height);
     entries[0].setFillColor(player2Color);
+
+    // just for safety
+    Vector2<float> sz(window.getSize().x, numOfFonts * 3 * entries[0].getGlobalBounds().height);
+    backGround.setSize(sz);
 
     // set the fonts
     for(int i = 1; i <= numOfFonts; i++){
