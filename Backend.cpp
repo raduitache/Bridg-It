@@ -248,6 +248,15 @@ bool BFS(queue &q, bool player){
     return 0;
 }
 
+unsigned playerMove(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEvent click2)
+{
+     int x1 = int(click1.x / (rowDist / 2));
+    int y1 = int(click1.y / (colDist / 2));
+    int x2 = int(click2.x / (rowDist / 2));
+    int y2 = int(click2.y / (colDist / 2));
+
+}
+
 void setPrerequisites(){
     backGroundColor = sf::Color(44, 47, 51);
 }

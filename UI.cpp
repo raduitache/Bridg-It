@@ -2,6 +2,8 @@
 
 using namespace sf;
 
+bool pcActive=false;
+
 void resetBackGround(){
     Vector2<float> bgSize(window.getSize().x, window.getSize().y);
     backGround.setSize(bgSize);
@@ -243,6 +245,72 @@ void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[],
         selection = currentSelection;
 }
 
+void miscarePc()
+{
+     int ok=0;
+
+                               for(int i=1;i<boardSize+1&&!ok;i++)
+                                 for(int j=0;j<boardSize+1&&!ok;j++)
+                                 if(board[i][j]=='0')
+                                 {
+                                     board[i][j]='0'+2;
+                                     ok=1;
+                                 }
+}
+
+void pcMode()
+{
+
+     createBoard();
+     window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
+      while(window.isOpen())
+    {
+
+           Event event;
+           while(window.pollEvent(event))
+           {
+
+                if (event.type == sf::Event::MouseButtonPressed)
+                    {
+
+                              if(event.mouseButton.button == sf::Mouse::Left)
+                                   {
+                                       if(!playerRound)
+                                       {
+                            unsigned s = linkDots(event.mouseButton);
+                             showWinner(s);
+                          if(s != 0)
+                            window.close();
+                                       }
+                                       else
+                        if(playerRound)
+                     {
+                          miscarePc();
+                           showWinner(gameOver(1));
+                             playerRound=!playerRound;
+
+                     }
+
+
+                                   }
+                    }
+
+
+
+
+                    if (event.type == sf::Event::Closed)
+                    window.close();
+           }
+
+
+           window.clear();
+       loadBoard();
+        window.display();
+      }
+
+    }
+
+
 void gameOptionsMenu(){
 
     window.create(VideoMode(800, 600), "Bridg-It");
@@ -296,9 +364,18 @@ void gameOptionsMenu(){
                     moveDown(selection, entries, dim);
                     break;
                 case Keyboard::Enter:
-                    boardSize = stoi(string(entries[selection].getString()));
-                    startGame();
+                    if(pcActive==true)
+                   {
+                       boardSize = stoi(string(entries[selection].getString()));
+                        pcMode();
+                   }
+                   else
+                   {
+                       boardSize = stoi(string(entries[selection].getString()));
+                       startGame();
+                   }
                     break;
+
                 case Keyboard::Escape:
                     numberOfPlayerMenu();
                     break;
@@ -377,6 +454,8 @@ void startGame(){
 
 }
 
+
+
 void dificultyMenu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
 
@@ -451,7 +530,11 @@ void eventEnter1(int &selection,Text entries[]){
     if(selection==1)
         gameOptionsMenu();
     if(selection==2)
-        dificultyMenu();
+    {
+        pcActive=true;
+        gameOptionsMenu();
+
+    }
 
 }
 
@@ -531,6 +614,8 @@ void numberOfPlayerMenu(){
 
 }
 
+
+
 void showWinner(unsigned u){
     if(u == 0)
         return;
@@ -565,6 +650,8 @@ void showWinner(unsigned u){
     }
 }
 
+
+
 void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox){
 
     resetBackGround();
@@ -598,7 +685,7 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
 
     // little settings for the sprite to look good, and some positioning
     myTick.setSmooth(true);
-    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().getSize().y, entries[1].getGlobalBounds().getSize().y);
+    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().height, entries[1].getGlobalBounds().height);
     checkBox.setSize(checkBoxSize);
     checkBox.setTexture(&myTick);
     checkBox.setPosition(entries[1].getPosition().x - 2 * checkBox.getSize().x, entries[1].getPosition().y + checkBox.getSize().y / 2);
@@ -817,7 +904,7 @@ void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[
                 player2Color = colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int((mousebutton.x - window.getSize().x / 2) / colorOptions[0][0].getSize().x)].getFillColor();
             }
         }
-        if(mousebutton.y > entries[3].getGlobalBounds().getPosition().y)
+        if(mousebutton.y > entries[3].getPosition().y)
             settingsMenu();
     }
 }
