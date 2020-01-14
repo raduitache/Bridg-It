@@ -1,4 +1,5 @@
 #include "Backend.hpp"
+#include "globalVars.hpp"
 #include <sstream>
 using namespace std;
 
@@ -245,4 +246,8 @@ bool BFS(queue &q, bool player){
 
     }
     return 0;
+}
+
+void setPrerequisites(){
+    backGroundColor = sf::Color(44, 47, 51);
 }
