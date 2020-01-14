@@ -1,3 +1,4 @@
+#include <sstream>
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -21,3 +22,5 @@ unsigned playerMove(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEv
 unsigned gameOver(bool player);
 
 bool BFS(queue &q, bool player);
+
+void setPrerequisites();

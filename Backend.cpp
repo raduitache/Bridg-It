@@ -1,4 +1,5 @@
 #include "Backend.hpp"
+#include "globalVars.hpp"
 #include <sstream>
 using namespace std;
 
@@ -254,4 +255,8 @@ unsigned playerMove(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEv
     int x2 = int(click2.x / (rowDist / 2));
     int y2 = int(click2.y / (colDist / 2));
 
+}
+
+void setPrerequisites(){
+    backGroundColor = sf::Color(44, 47, 51);
 }
