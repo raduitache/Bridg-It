@@ -1,6 +1,4 @@
 #include "Backend.hpp"
-#include "globalVars.hpp"
-#include <sstream>
 using namespace std;
 
 
@@ -250,4 +248,37 @@ bool BFS(queue &q, bool player){
 
 void setPrerequisites(){
     backGroundColor = sf::Color(44, 47, 51);
+    fontPath = "Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf";
+}
+
+int getNumberOfFonts(){
+    struct dirent **files;
+    string ext = "tff";
+    int n, res;
+
+    n = scandir("Assets" pathSeparator "Fonts",  &files, NULL, alphasort);
+    res = 0;
+    for(int i = 0; i < n; i++){
+        struct dirent *ent;
+
+        ent = files[i];
+        string name = ent->d_name;
+        if(ent->d_type == DT_REG)
+            res++;
+    }
+
+    return res;
+}
+
+void setFonts(string entries[], int n){
+    struct dirent **files;
+    int counter = 0, filesNumber;
+    filesNumber = scandir("Assets" pathSeparator "Fonts", &files, NULL, alphasort);
+    for(int i = 0; i < filesNumber; i++){
+        struct dirent *ent = files[i];
+        if(ent->d_type == DT_REG){
+            entries[counter] = ent->d_name;
+            counter++;
+        }
+    }
 }

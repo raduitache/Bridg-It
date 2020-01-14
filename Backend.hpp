@@ -1,5 +1,6 @@
 #include <sstream>
 #include <string>
+#include <dirent.h>
 #include <iostream>
 #include <algorithm>
 #include <SFML/Window.hpp>
@@ -22,3 +23,7 @@ unsigned gameOver(bool player);
 bool BFS(queue &q, bool player);
 
 void setPrerequisites();
+
+int getNumberOfFonts();
+
+void setFonts(string entries[], int n);

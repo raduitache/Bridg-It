@@ -9,3 +9,4 @@ extern sf::RectangleShape backGround;
 extern sf::Image ticked, unticked;
 extern bool playerRound;
 extern bool isMuted;
+extern std::string fontPath;

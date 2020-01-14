@@ -8,7 +8,6 @@ using namespace sf;
 
 int main(){
 
-
     setPrerequisites();
     Meniusetup();
 

@@ -4,6 +4,7 @@ using namespace sf;
 
 void resetBackGround(){
     Vector2<float> bgSize(window.getSize().x, window.getSize().y);
+    backGround.setPosition(0.f, 0.f);
     backGround.setSize(bgSize);
     backGround.setFillColor(backGroundColor);
 }
@@ -75,7 +76,7 @@ void loadBoard(){
         }
     }
 
-    // load links for the first player
+    // load links for both players
     for(int i = 0; i < 2 * boardSize - 1; i++)
     {
         for(int j = 0; j < 2 * boardSize - 1; j++)
@@ -123,7 +124,7 @@ void Meniusetup(){
     resetBackGround();
     Text entries[5];
     Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    myFont.loadFromFile(fontPath);
     for(int i = 0; i < 5; i++)
     {
         entries[i].setCharacterSize(textSize);
@@ -250,7 +251,7 @@ void gameOptionsMenu(){
     // the text that will server as buttons, and the font for it
     Text entries[4];
     Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    myFont.loadFromFile(fontPath);
 
     // set how many options we use
     int dim = 4;
@@ -384,7 +385,7 @@ void dificultyMenu(){
 
     Text entries[4];
     Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    myFont.loadFromFile(fontPath);
     for(int i = 0; i < 4; i++)
     {
         entries[i].setCharacterSize(textSize);
@@ -462,7 +463,7 @@ void numberOfPlayerMenu(){
 
     Text entries[3];
     Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    myFont.loadFromFile(fontPath);
     for(int i = 0; i < 3; i++)
     {
         entries[i].setCharacterSize(textSize);
@@ -544,11 +545,11 @@ void showWinner(unsigned u){
         winnerText.setString("Player 2 won!");
     }
     Font textFont;
-    textFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    textFont.loadFromFile(fontPath);
     winnerText.setFont(textFont);
     winnerText.setCharacterSize(window.getSize().y / winnerText.getString().getSize() * 2);
     RectangleShape focusRect;
-    Color newCol(44, 47, 51, 80);
+    Color newCol(44, 47, 51, 200);
     focusRect.setFillColor(newCol);
     winnerText.setPosition((window.getSize().x - winnerText.getGlobalBounds().width) / 2, (window.getSize().y - winnerText.getGlobalBounds().height) / 2);
     Vector2f windowSize;
@@ -570,7 +571,7 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
     resetBackGround();
 
     // get font
-    font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    font.loadFromFile(fontPath);
 
     // set the common properties for the text values
     for(int i = 0; i < 5; i++){
@@ -598,7 +599,7 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
 
     // little settings for the sprite to look good, and some positioning
     myTick.setSmooth(true);
-    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().getSize().y, entries[1].getGlobalBounds().getSize().y);
+    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().height, entries[1].getGlobalBounds().height);
     checkBox.setSize(checkBoxSize);
     checkBox.setTexture(&myTick);
     checkBox.setPosition(entries[1].getPosition().x - 2 * checkBox.getSize().x, entries[1].getPosition().y + checkBox.getSize().y / 2);
@@ -698,7 +699,7 @@ void setSelectPlayerColorsMenu(Text entries[], RectangleShape colorOptions[][3],
     entries[3].setString("Back");
 
     // choose font and assign it
-    font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    font.loadFromFile(fontPath);
 
     // set font and character size for all text
     for(int i = 0; i < 4; i++){
@@ -817,11 +818,109 @@ void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[
                 player2Color = colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int((mousebutton.x - window.getSize().x / 2) / colorOptions[0][0].getSize().x)].getFillColor();
             }
         }
-        if(mousebutton.y > entries[3].getGlobalBounds().getPosition().y)
+        if(mousebutton.y > entries[3].getPosition().y)
             settingsMenu();
     }
 }
 
+void setSelectFontMenuEntries(string fonts[], Text entries[], int numOfFonts, int selection, Font &font, View &titleView, View &fontsView){
+
+
+    resetBackGround();
+
+    // set the title's properties
+    entries[0].setString("Choose font");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[0].setCharacterSize(textSize);
+    entries[0].setFont(font);
+    entries[0].setPosition((window.getSize().x - entries[0].getGlobalBounds().width) / 2, window.getSize().y / 2 - entries[0].getGlobalBounds().height);
+    entries[0].setFillColor(player2Color);
+
+    // set the fonts
+    for(int i = 1; i <= numOfFonts; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setString(fonts[i - 1]);
+        entries[i].setFont(font);
+        entries[i].setPosition((window.getSize().x - entries[i].getGlobalBounds().width) / 2, i * entries[0].getGlobalBounds().height * 2);
+        entries[i].setFillColor(player2Color);
+    }
+    entries[selection].setFillColor(player1Color);
+
+    // finally let's set the views
+    titleView.setViewport(FloatRect(0.f, 0.f, 1.f, 2 * entries[0].getGlobalBounds().height / window.getSize().y));
+    titleView.setSize(window.getSize().x, 2 * entries[0].getGlobalBounds().height);
+    titleView.setCenter(window.getSize().x / 2, window.getSize().y / 2);
+    fontsView.setViewport(FloatRect(0.f, 2 * entries[0].getGlobalBounds().height / window.getSize().y, 1.0f, (window.getSize().y - 2 * entries[0].getGlobalBounds().height / window.getSize().y) / window.getSize().y));
+    fontsView.setSize(window.getSize().x, window.getSize().y - 2 * entries[0].getGlobalBounds().height);
+    fontsView.setCenter(window.getSize().x / 2, window.getSize().y / 2 + entries[0].getGlobalBounds().height);
+    // well that took a lot to figure out :(((
+
+}
+
 void selectFontMenu(){
 
+    window.create(VideoMode(800, 600), "Select Font");
+
+    // since we'll do a scroll and I want the title to stand out, we'll need separate views
+    View titleView, fontsView;
+
+    // load font names
+    int numOfFonts = getNumberOfFonts(), selection = 1;
+    string fonts[numOfFonts];
+    setFonts(fonts, numOfFonts);
+    Font font;
+    font.loadFromFile(fontPath);
+
+    // make text entries
+    Text entries[numOfFonts + 1];
+    setSelectFontMenuEntries(fonts, entries, numOfFonts, selection, font, titleView, fontsView);
+
+    while(window.isOpen()){
+        Event event;
+
+        while(window.pollEvent(event)){
+            switch(event.type){
+            case Event::Closed:
+                settingsMenu();
+                break;
+            case Event::Resized:
+                setSelectFontMenuEntries(fonts, entries, numOfFonts, selection, font, titleView, fontsView);
+                break;
+            case Event::KeyReleased:
+                switch(event.key.code){
+                case Keyboard::Up:
+                    moveUp(selection, entries);
+                    if(fontsView.getCenter().y > window.getSize().y / 2 + 2 * entries[0].getGlobalBounds().height)
+                        fontsView.move(0.f, -2 * entries[0].getGlobalBounds().height);
+                    else
+                        fontsView.setCenter(window.getSize().x / 2, window.getSize().y / 2);
+                    break;
+                case Keyboard::Down:
+                    moveDown(selection, entries, numOfFonts + 1);
+                    if(fontsView.getCenter().y < (numOfFonts - 1) * entries[0].getGlobalBounds().height * 2){
+                        fontsView.move(0.f, 2 * entries[0].getGlobalBounds().height);
+                    }
+                    else{
+                        fontsView.setCenter(window.getSize().x / 2, 2 * entries[0].getGlobalBounds().height * numOfFonts);
+                    }
+                    break;
+                case Keyboard::Enter:
+                    fontPath = "Assets" pathSeparator "Fonts" pathSeparator;
+                    fontPath = fontPath + entries[selection].getString();
+                    settingsMenu();
+                }
+            }
+        }
+        window.clear();
+        window.setView(fontsView);
+        window.draw(backGround);
+        for(int i = 1; i <= numOfFonts; i++){
+            window.draw(entries[i]);
+        }
+        window.setView(titleView);
+        window.draw(backGround);
+        window.draw(entries[0]);
+        window.display();
+        //fontsView.move(0.f, 0.05f);
+    }
 }
