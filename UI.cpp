@@ -2,6 +2,8 @@
 
 using namespace sf;
 
+bool pcActive=false;
+
 void drawLinks(int i, int j){
     char player;
     Color culoare;
@@ -229,6 +231,71 @@ void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[],
         selection = currentSelection;
 }
 
+void miscarePc()
+{
+     int ok=0;
+
+                               for(int i=1;i<boardSize+1&&!ok;i++)
+                                 for(int j=0;j<boardSize+1&&!ok;j++)
+                                 if(board[i][j]=='0')
+                                 {
+                                     board[i][j]='0'+2;
+                                     ok=1;
+                                 }
+}
+
+void pcMode()
+{
+
+     createBoard();
+     window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
+     bool turn=true;
+      while(window.isOpen())
+    {
+
+           Event event;
+           while(window.pollEvent(event))
+           {
+
+                if (event.type == sf::Event::MouseButtonPressed)
+                    {
+                        if(turn==true)
+                          {
+                              if(event.mouseButton.button == sf::Mouse::Left)
+                                   {
+
+                    unsigned s = linkDots(event.mouseButton);
+                    showWinner(s);
+                    if(s != 0)
+                        window.close();turn=!turn;
+
+                                   }
+
+                    }
+                    else
+                     {
+                          miscarePc();
+                            turn=!turn;
+                             playerRound=!playerRound;
+                            cout<<1<<" ";
+
+                     }
+
+                    }
+
+                    if (event.type == sf::Event::Closed)
+                    window.close();
+           }
+
+
+           window.clear();
+       loadBoard();
+        window.display();
+      }
+
+    }
+
+
 void gameOptionsMenu(){
 
     window.create(VideoMode(800, 600), "Bridg-It");
@@ -282,9 +349,18 @@ void gameOptionsMenu(){
                     moveDown(selection, entries, dim);
                     break;
                 case Keyboard::Enter:
-                    boardSize = stoi(string(entries[selection].getString()));
-                    startGame();
+                    if(pcActive==true)
+                   {
+                       boardSize = stoi(string(entries[selection].getString()));
+                        pcMode();
+                   }
+                   else
+                   {
+                       boardSize = stoi(string(entries[selection].getString()));
+                       startGame();
+                   }
                     break;
+
                 case Keyboard::Escape:
                     numberOfPlayerMenu();
                     break;
@@ -362,6 +438,8 @@ void startGame(){
 
 }
 
+
+
 void dificultyMenu(){
     window.create(sf::VideoMode(800,600), "Bridg-It");
 
@@ -433,7 +511,11 @@ void eventEnter1(int &selection,Text entries[]){
     if(selection==1)
         gameOptionsMenu();
     if(selection==2)
-        dificultyMenu();
+    {
+        pcActive=true;
+        gameOptionsMenu();
+
+    }
 
 }
 
@@ -509,6 +591,8 @@ void numberOfPlayerMenu(){
 
 }
 
+
+
 void showWinner(unsigned u){
     if(u == 0)
         return;
@@ -541,4 +625,6 @@ void showWinner(unsigned u){
         window.display();
     }
 }
+
+
 
