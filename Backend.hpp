@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 #include <dirent.h>
+#include <fstream>
 #include <iostream>
 #include <algorithm>
 #include <SFML/Window.hpp>
@@ -27,3 +28,5 @@ void setPrerequisites();
 int getNumberOfFonts();
 
 void setFonts(string entries[], int n);
+
+void saveSettings();

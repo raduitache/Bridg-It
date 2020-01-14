@@ -1,8 +1,10 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
+#include "globalVars.hpp"
 
 int boardSize;
 char **board;
+sf::Sound firstClickSound, secondClickSound;
+sf::Music music;
+sf::SoundBuffer soundBuffer;
 sf::RenderWindow window;
 sf::RectangleShape backGround;
 sf::Image ticked, unticked;

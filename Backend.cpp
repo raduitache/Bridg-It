@@ -247,8 +247,12 @@ bool BFS(queue &q, bool player){
 }
 
 void setPrerequisites(){
+    music.openFromFile("Assets" pathSeparator "Sounds" pathSeparator "backGroundMusic.ogg");
+    music.setLoop(true);
     backGroundColor = sf::Color(44, 47, 51);
     fontPath = "Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf";
+    if(isMuted == 0)
+        music.play();
 }
 
 int getNumberOfFonts(){
@@ -281,4 +285,8 @@ void setFonts(string entries[], int n){
             counter++;
         }
     }
+}
+
+void saveSettings(){
+
 }

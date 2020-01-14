@@ -166,7 +166,9 @@ void Meniusetup(){
 
                 case sf::Keyboard::Enter:
                     eventEnter(selection);
-                    break ;
+                    break;
+                case Keyboard::Escape:
+                    window.close();
                 }
                 break;
             }
@@ -658,12 +660,17 @@ void settingsMenu(){
                     moveDown(selection, entries, dim);
                     break;
                 case Keyboard::Escape:
+                    saveSettings();
                     Meniusetup();
                     break;
                 case Keyboard::Enter:
                     switch(selection){
                     case 1:
                         isMuted = !isMuted;
+                        if(!isMuted)
+                            music.play();
+                        else
+                            music.stop();
                         setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                         break;
                     case 2:
@@ -673,6 +680,7 @@ void settingsMenu(){
                         selectFontMenu();
                         break;
                     default:
+                        saveSettings();
                         Meniusetup();
                     }
                 }
@@ -770,11 +778,9 @@ void selectPlayerColorsMenu(){
             case Event::KeyReleased:
                 switch(event.key.code){
                 case Keyboard::Enter:
-                    window.close();
                     settingsMenu();
                     break;
                 case Keyboard::Escape:
-                    window.close();
                     settingsMenu();
                 }
                 break;
@@ -859,7 +865,7 @@ void setSelectFontMenuEntries(string fonts[], Text entries[], int numOfFonts, in
 
 void selectFontMenu(){
 
-    window.create(VideoMode(800, 600), "Select Font");
+    window.create(VideoMode(1000, 600), "Select Font");
 
     // since we'll do a scroll and I want the title to stand out, we'll need separate views
     View titleView, fontsView;
@@ -907,6 +913,9 @@ void selectFontMenu(){
                 case Keyboard::Enter:
                     fontPath = "Assets" pathSeparator "Fonts" pathSeparator;
                     fontPath = fontPath + entries[selection].getString();
+                    settingsMenu();
+                    break;
+                case Keyboard::Escape:
                     settingsMenu();
                 }
             }
