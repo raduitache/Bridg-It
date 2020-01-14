@@ -249,6 +249,10 @@ bool BFS(queue &q, bool player){
 void setPrerequisites(){
     music.openFromFile("Assets" pathSeparator "Sounds" pathSeparator "backGroundMusic.ogg");
     music.setLoop(true);
+    soundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "pop.flac");
+    firstClickSound.setBuffer(soundBuffer);
+    secondClickSound.setBuffer(soundBuffer);
+    secondClickSound.setPitch(1.2f);
     backGroundColor = sf::Color(44, 47, 51);
     fontPath = "Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf";
     if(isMuted == 0)

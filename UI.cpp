@@ -333,6 +333,8 @@ unsigned linkDots(sf::Event::MouseButtonEvent mouse){
                 {
                     if(event.mouseButton.button == sf::Mouse::Left)
                     {
+                        if(!isMuted)
+                            secondClickSound.play();
                         return linkIfValid(mouse, event.mouseButton);
                     }
                 }
@@ -364,6 +366,8 @@ void startGame(){
             {
                 if(event.mouseButton.button == Mouse::Left)
                 {
+                    if(!isMuted)
+                        firstClickSound.play();
                     unsigned s = linkDots(event.mouseButton);
                     showWinner(s);
                     if(s != 0)
