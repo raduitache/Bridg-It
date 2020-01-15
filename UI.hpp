@@ -14,7 +14,7 @@ void startGame();
 
 void loadBoard();
 
-void Meniusetup();
+void mainMenu();
 
 void centerscreen(RenderWindow &meniu);
 
@@ -40,6 +40,8 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
 
 void selectFontMenu();
 
+void setSelectFontMenuEntries(string fonts[], Text entries[], int numOfFonts, int selection, Font &font, View &titleView, View &fontsView);
+
 void setSelectPlayerColorsMenu(Text entries[], RectangleShape colorOptions[][3], Font &font);
 
 void drawColors(RectangleShape colorOptions[][3], bool player, Text title);
@@ -50,3 +52,4 @@ void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[
 
 void resetBackGround();
 
+void PCMode();

@@ -1,6 +1,4 @@
 #include "Backend.hpp"
-#include "globalVars.hpp"
-#include <sstream>
 using namespace std;
 
 
@@ -258,5 +256,86 @@ unsigned playerMove(sf::Event::MouseButtonEvent click1, sf::Event::MouseButtonEv
 }
 
 void setPrerequisites(){
+    fstream f;
+    f.open("conf.ini", fstream::in);
+
+    // first thing should be the boolean value for this
+    f >> isMuted;
+
+    // we'll need some values for the rgb code
+    int r, g, b;
+
+    // we'll have the colors stored as rgb codes, as it's easier to parse. The codes for the first player
+    f >> r >> g >> b;
+    player1Color = sf::Color(r, g, b);
+
+    // and the same for the second
+    f >> r >> g >> b;
+    player2Color = sf::Color(r, g, b);
+
+    // and finally a string for the font
+    fontPath = "Assets" pathSeparator "Fonts" pathSeparator;
+    string s;
+    f >> s;
+    fontPath += s;
+
+    // and we'll be closing the stream now
+    f.close();
+
+    ticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "ticked.png");
+    unticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "unticked.png");
+    music.openFromFile("Assets" pathSeparator "Sounds" pathSeparator "backGroundMusic.ogg");
+    clickSoundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "pop.flac");
+    winSoundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "win.wav");
+    music.setLoop(true);
+    firstClickSound.setBuffer(clickSoundBuffer);
+    secondClickSound.setBuffer(clickSoundBuffer);
+    winSound.setBuffer(winSoundBuffer);
+    secondClickSound.setPitch(1.2f);
     backGroundColor = sf::Color(44, 47, 51);
+    if(isMuted == 0)
+        music.play();
+}
+
+int getNumberOfFonts(){
+    struct dirent **files;
+    string ext = "tff";
+    int n, res;
+
+    n = scandir("Assets" pathSeparator "Fonts",  &files, NULL, alphasort);
+    res = 0;
+    for(int i = 0; i < n; i++){
+        struct dirent *ent;
+
+        ent = files[i];
+        string name = ent->d_name;
+        if(ent->d_type == DT_REG)
+            res++;
+    }
+
+    return res;
+}
+
+void setFonts(string entries[], int n){
+    struct dirent **files;
+    int counter = 0, filesNumber;
+    filesNumber = scandir("Assets" pathSeparator "Fonts", &files, NULL, alphasort);
+    for(int i = 0; i < filesNumber; i++){
+        struct dirent *ent = files[i];
+        if(ent->d_type == DT_REG){
+            entries[counter] = ent->d_name;
+            counter++;
+        }
+    }
+}
+
+void saveSettings(){
+    fstream f;
+    f.open("conf.ini", fstream::out);
+    f << isMuted << endl;
+    unsigned p1 = player1Color.toInteger();
+    unsigned p2 = player2Color.toInteger();
+    f << (p1 >> 24) << " " << ((p1 << 8) >> 24) << " " << ((p1 << 16) >> 24) << endl;
+    f << (p2 >> 24) << " " << ((p2 << 8) >> 24) << " " << ((p2 << 16) >> 24) << endl;
+    f << fontPath.substr(fontPath.rfind(pathSeparator) + 1) << endl;
 }

@@ -1,11 +1,11 @@
 #include "UI.hpp"
+#include "AI.hpp"
 
 using namespace sf;
 
-bool pcActive=false;
-
 void resetBackGround(){
     Vector2<float> bgSize(window.getSize().x, window.getSize().y);
+    backGround.setPosition(0.f, 0.f);
     backGround.setSize(bgSize);
     backGround.setFillColor(backGroundColor);
 }
@@ -77,7 +77,7 @@ void loadBoard(){
         }
     }
 
-    // load links for the first player
+    // load links for both players
     for(int i = 0; i < 2 * boardSize - 1; i++)
     {
         for(int j = 0; j < 2 * boardSize - 1; j++)
@@ -113,20 +113,21 @@ void eventEnter(int &selection){
         numberOfPlayerMenu();
     if(selection==2)
         settingsMenu();
-    if(selection==4)
+    if(selection==3)
         window.close();
 
 
 }
 
-void Meniusetup(){
-    window.create(sf::VideoMode(800,600), "Bridg-It");
+void setMainMenuEntries(Text entries[], Font &myFont, int selection){
 
     resetBackGround();
-    Text entries[5];
-    Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
-    for(int i = 0; i < 5; i++)
+
+    sf::FloatRect visibleArea(0, 0, window.getSize().x, window.getSize().y);
+    window.setView(sf::View(visibleArea));
+
+    myFont.loadFromFile(fontPath);
+    for(int i = 0; i < 4; i++)
     {
         entries[i].setCharacterSize(textSize);
         entries[i].setColor(player2Color);
@@ -134,17 +135,26 @@ void Meniusetup(){
     }
     entries[0].setString("WELCOME");
     entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[selection].setColor(player1Color);
     entries[1].setString("Start Game");
     entries[2].setString("Settings");
-    entries[3].setString("High Score");
-    entries[4].setString("Exit");
-    int dimension=5;
-    int selection=1;
-    entries[1].setColor(player1Color);
-    for(int i = 0; i < 5; i++)
+    entries[3].setString("Exit");
+
+    for(int i = 0; i < 4; i++)
     {
-        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 4));
     }
+}
+
+void mainMenu(){
+    window.create(sf::VideoMode(1000,600), "Bridg-It");
+
+    resetBackGround();
+    Text entries[4];
+    Font myFont;
+    int dimension=4;
+    int selection=1;
+    setMainMenuEntries(entries, myFont, selection);
     while(window.isOpen())
     {
         Event event;
@@ -167,17 +177,24 @@ void Meniusetup(){
 
                 case sf::Keyboard::Enter:
                     eventEnter(selection);
-                    break ;
+                    setMainMenuEntries(entries, myFont, selection);
+                    break;
+                case Keyboard::Escape:
+                    window.close();
                 }
                 break;
-            }
-            if(event.type == Event::Closed)
+            case sf::Event::Resized:
+                setMainMenuEntries(entries, myFont, selection);
+                break;
+            case sf::Event::Closed:
                 window.close();
+
+            }
 
         }
         window.clear();
         window.draw(backGround);
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 4; i++)
             window.draw(entries[i]);
         window.display();
 
@@ -245,80 +262,71 @@ void setSelection(int &selection, Event::MouseButtonEvent mouse, Text entries[],
         selection = currentSelection;
 }
 
-void miscarePc()
-{
-     int ok=0;
 
-                               for(int i=1;i<boardSize+1&&!ok;i++)
-                                 for(int j=0;j<boardSize+1&&!ok;j++)
-                                 if(board[i][j]=='0')
-                                 {
-                                     board[i][j]='0'+2;
-                                     ok=1;
-                                 }
-}
-
-void pcMode()
+void PCMode()
 {
 
-     createBoard();
-     window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
-      while(window.isOpen())
+    createBoard();
+    window.create(sf::VideoMode((boardSize - 1) * colDist + 2 * circleRadius, (boardSize - 1) * rowDist + 2 * circleRadius), "Bridg-It", Style::Titlebar | Style::Close);
+    while(window.isOpen())
     {
 
-           Event event;
-           while(window.pollEvent(event))
-           {
+        Event event;
+        while(window.pollEvent(event))
+        {
 
-                if (event.type == sf::Event::MouseButtonPressed)
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+
+                if(event.mouseButton.button == sf::Mouse::Left)
+                {
+                    if(!playerRound)
                     {
-
-                              if(event.mouseButton.button == sf::Mouse::Left)
-                                   {
-                                       if(!playerRound)
-                                       {
-                            unsigned s = linkDots(event.mouseButton);
-                             showWinner(s);
-                          if(s != 0)
+                        if(!isMuted)
+                            firstClickSound.play();
+                        unsigned s = linkDots(event.mouseButton);
+                        showWinner(s);
+                        if(s != 0)
                             window.close();
-                                       }
-                                       else
-                        if(playerRound)
-                     {
-                          miscarePc();
-                           showWinner(gameOver(1));
-                             playerRound=!playerRound;
-
-                     }
-
-
-                                   }
                     }
 
 
+                }
+            }
 
 
-                    if (event.type == sf::Event::Closed)
-                    window.close();
-           }
 
 
-           window.clear();
-       loadBoard();
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        loadBoard();
         window.display();
-      }
 
+        // so it gets drawn in the next frame
+        if(playerRound)
+        {
+            if(pcActive == 1)
+                miscareEasyPc();
+            else
+                miscareMediumPC();
+            showWinner(gameOver(1));
+            playerRound=!playerRound;
+
+        }
     }
+
+}
 
 
 void gameOptionsMenu(){
 
-    window.create(VideoMode(800, 600), "Bridg-It");
-
     // the text that will server as buttons, and the font for it
     Text entries[4];
     Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    myFont.loadFromFile(fontPath);
 
     // set how many options we use
     int dim = 4;
@@ -337,8 +345,7 @@ void gameOptionsMenu(){
             switch(event.type)
             {
             case Event::Closed:
-                window.close();
-                break;
+                return;
 
             case Event::Resized:
             {
@@ -364,21 +371,15 @@ void gameOptionsMenu(){
                     moveDown(selection, entries, dim);
                     break;
                 case Keyboard::Enter:
-                    if(pcActive==true)
-                   {
-                       boardSize = stoi(string(entries[selection].getString()));
-                        pcMode();
-                   }
-                   else
-                   {
-                       boardSize = stoi(string(entries[selection].getString()));
-                       startGame();
-                   }
+                    boardSize = stoi(string(entries[selection].getString()));
+                    if(pcActive == 0)
+                        startGame();
+                    else
+                        PCMode();
                     break;
 
                 case Keyboard::Escape:
-                    numberOfPlayerMenu();
-                    break;
+                    return;
                 }
                 break;
             }
@@ -407,6 +408,8 @@ unsigned linkDots(sf::Event::MouseButtonEvent mouse){
                 {
                     if(event.mouseButton.button == sf::Mouse::Left)
                     {
+                        if(!isMuted)
+                            secondClickSound.play();
                         return linkIfValid(mouse, event.mouseButton);
                     }
                 }
@@ -438,6 +441,8 @@ void startGame(){
             {
                 if(event.mouseButton.button == Mouse::Left)
                 {
+                    if(!isMuted)
+                        firstClickSound.play();
                     unsigned s = linkDots(event.mouseButton);
                     showWinner(s);
                     if(s != 0)
@@ -454,16 +459,14 @@ void startGame(){
 
 }
 
-
-
-void dificultyMenu(){
-    window.create(sf::VideoMode(800,600), "Bridg-It");
+void setDificultyMenuEntries(Text entries[], Font &myFont){
 
     resetBackGround();
 
-    Text entries[4];
-    Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    sf::FloatRect visibleArea(0, 0, window.getSize().x, window.getSize().y);
+    window.setView(sf::View(visibleArea));
+
+    myFont.loadFromFile(fontPath);
     for(int i = 0; i < 4; i++)
     {
         entries[i].setCharacterSize(textSize);
@@ -472,20 +475,29 @@ void dificultyMenu(){
     }
 
     // set individual characteristics;
+
     entries[0].setString("Chose Difficulty");
     entries[0].setStyle(Text::Bold | Text::Underlined);
     entries[1].setString("Easy");
+    entries[1].setColor(player1Color);
     entries[2].setString("Normal");
     entries[3].setString("Hard");
     for(int i = 0; i <4; i++)
     {
-        entries[i].setPosition(window.getSize().x / 2 -
-                               entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
+        entries[i].setPosition(window.getSize().x / 2 - entries[i].getGlobalBounds().width / 2, i * (window.getSize().y / 5));
     }
+}
+
+void dificultyMenu(){
+
+
+    Text entries[4];
+    Font myFont;
+
     int selection=1;
     int dimension=4;
-    entries[1].setColor(player1Color);
 
+    setDificultyMenuEntries(entries, myFont);
     while(window.isOpen())
     {
         sf::Event event;
@@ -508,13 +520,21 @@ void dificultyMenu(){
 
 
                 case sf::Keyboard::Escape:
-                    numberOfPlayerMenu();
-                    break;
+                    return;
+                case sf::Keyboard::Enter:
+                    pcActive = selection;
+                    gameOptionsMenu();
+                    setDificultyMenuEntries(entries, myFont);
                 }
                 break;
+                case sf::Event::Resized:
+                    setDificultyMenuEntries(entries, myFont);
+                    break;
+
+                case sf::Event::Closed:
+                    return;
+
             }
-            if(event.type == Event::Closed)
-                window.close();
         }
         window.clear();
         window.draw(backGround);
@@ -527,25 +547,24 @@ void dificultyMenu(){
 }
 
 void eventEnter1(int &selection,Text entries[]){
-    if(selection==1)
+    if(selection==1){
+        pcActive = 0;
         gameOptionsMenu();
-    if(selection==2)
-    {
-        pcActive=true;
-        gameOptionsMenu();
-
     }
+    if(selection==2)
+        dificultyMenu();
 
 }
 
-void numberOfPlayerMenu(){
-    window.create(sf::VideoMode(800,600), "Bridg-It");
+void setNumberOfPlayerMenuEntries(Text entries[], Font &myFont){
 
     resetBackGround();
 
-    Text entries[3];
-    Font myFont;
-    myFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    sf::FloatRect visibleArea(0, 0, window.getSize().x, window.getSize().y);
+    window.setView(sf::View(visibleArea));
+
+
+    myFont.loadFromFile(fontPath);
     for(int i = 0; i < 3; i++)
     {
         entries[i].setCharacterSize(textSize);
@@ -554,6 +573,7 @@ void numberOfPlayerMenu(){
     }
 
     // set individual characteristics;
+    entries[1].setFillColor(player1Color);
     entries[1].setString("Player Vs Player");
     entries[1].setStyle(Text::Bold | Text::Underlined);
     entries[2].setString("Player Vs Pc");
@@ -566,10 +586,16 @@ void numberOfPlayerMenu(){
                                entries[i].getGlobalBounds().width /2,i* (window.getSize().y/3));
 
     }
+}
+
+void numberOfPlayerMenu(){
+
+    Text entries[3];
+    Font myFont;
     int selection=1;
     int dimension=3;
-    entries[1].setColor(player1Color);
 
+    setNumberOfPlayerMenuEntries(entries, myFont);
     while(window.isOpen())
     {
         Event event;
@@ -592,15 +618,18 @@ void numberOfPlayerMenu(){
 
                 case sf::Keyboard::Enter:
                     eventEnter1(selection,entries);
+                    setNumberOfPlayerMenuEntries(entries, myFont);
                     break ;
                 case sf::Keyboard::Escape:
-                    Meniusetup();
-                    break;
+                    return;
                 }
                 break;
+            case sf::Event::Resized:
+                setNumberOfPlayerMenuEntries(entries, myFont);
+                break;
+            case sf::Event::Closed:
+                return;
             }
-            if(event.type == Event::Closed)
-                window.close();
 
         }
         window.clear();
@@ -613,8 +642,6 @@ void numberOfPlayerMenu(){
 
 
 }
-
-
 
 void showWinner(unsigned u){
     if(u == 0)
@@ -629,11 +656,11 @@ void showWinner(unsigned u){
         winnerText.setString("Player 2 won!");
     }
     Font textFont;
-    textFont.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    textFont.loadFromFile(fontPath);
     winnerText.setFont(textFont);
     winnerText.setCharacterSize(window.getSize().y / winnerText.getString().getSize() * 2);
     RectangleShape focusRect;
-    Color newCol(44, 47, 51, 80);
+    Color newCol(44, 47, 51, 200);
     focusRect.setFillColor(newCol);
     winnerText.setPosition((window.getSize().x - winnerText.getGlobalBounds().width) / 2, (window.getSize().y - winnerText.getGlobalBounds().height) / 2);
     Vector2f windowSize;
@@ -641,23 +668,52 @@ void showWinner(unsigned u){
     windowSize.y = float(window.getSize().y);
     focusRect.setSize(windowSize);
     Clock clock;
+    music.stop();
+    if(!isMuted)
+        winSound.play();
     while(clock.getElapsedTime().asSeconds() < 5.0f){
+
+        Event event;
+        while(window.pollEvent(event)){
+            if(event.type == Event::Closed || event.type == Event::KeyPressed){
+                mainMenu();
+                return;
+            }
+        }
         window.clear();
         loadBoard();
         window.draw(focusRect);
         window.draw(winnerText);
         window.display();
     }
+    window.close();
 }
-
-
 
 void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture &myTick, RectangleShape &checkBox){
 
     resetBackGround();
 
+    // adjust the view to the new window size, so the image doesn't appear stretched
+    sf::FloatRect visibleArea(0, 0, window.getSize().x, window.getSize().y);
+    window.setView(sf::View(visibleArea));
+
     // get font
-    font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    font.loadFromFile(fontPath);
+
+
+    // depending on whether we'll have sound or not, we tick the box or untick it
+    if(isMuted)
+        myTick.loadFromImage(unticked);
+    else
+        myTick.loadFromImage(ticked);
+
+    // little settings for the sprite to look good, and some positioning
+    myTick.setSmooth(true);
+    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().height, entries[1].getGlobalBounds().height);
+    checkBox.setSize(checkBoxSize);
+    checkBox.setTexture(&myTick);
+    checkBox.setPosition(entries[1].getPosition().x - 2 * checkBox.getSize().x, entries[1].getPosition().y + checkBox.getSize().y / 2);
+    checkBox.setFillColor(player2Color);
 
     // set the common properties for the text values
     for(int i = 0; i < 5; i++){
@@ -677,20 +733,6 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
     entries[3].setString("Font");
     entries[4].setString("Back");
 
-    // depending on whether we'll have sound or not, we tick the box or untick it
-    if(isMuted)
-        myTick.loadFromImage(unticked);
-    else
-        myTick.loadFromImage(ticked);
-
-    // little settings for the sprite to look good, and some positioning
-    myTick.setSmooth(true);
-    Vector2<float> checkBoxSize(entries[1].getGlobalBounds().height, entries[1].getGlobalBounds().height);
-    checkBox.setSize(checkBoxSize);
-    checkBox.setTexture(&myTick);
-    checkBox.setPosition(entries[1].getPosition().x - 2 * checkBox.getSize().x, entries[1].getPosition().y + checkBox.getSize().y / 2);
-    checkBox.setFillColor(player2Color);
-
     // positioning of all
     for(int i = 0; i < 5; i++)
     {
@@ -700,7 +742,6 @@ void setSettingsMenuEntries(Text entries[], Font &font, int &selection, Texture 
 
 void settingsMenu(){
 
-    window.create(sf::VideoMode(800,600), "Bridg-It");
 
     int selection = 1, dim = 5;
     Text entries[dim];
@@ -708,9 +749,7 @@ void settingsMenu(){
     Texture myTick;
     RectangleShape checkBox;
 
-    ticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "ticked.png");
-    unticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "unticked.png");
-
+    setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
     setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
     while(window.isOpen())
     {
@@ -720,20 +759,14 @@ void settingsMenu(){
             switch(event.type)
             {
             case Event::Closed:
-                window.close();
-                break;
+                saveSettings();
+                return;
 
             case Event::Resized:
-            {
-
-                // adjust the view to the new window size, so the image doesn't appear stretched
-                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                window.setView(sf::View(visibleArea));
 
                 // keep the elements of the window responsive
                 setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                 break;
-            }
             case Event::KeyReleased:
                 switch(event.key.code)
                 {
@@ -744,22 +777,29 @@ void settingsMenu(){
                     moveDown(selection, entries, dim);
                     break;
                 case Keyboard::Escape:
-                    Meniusetup();
-                    break;
+                    saveSettings();
+                    return;
                 case Keyboard::Enter:
                     switch(selection){
                     case 1:
                         isMuted = !isMuted;
+                        if(!isMuted)
+                            music.play();
+                        else
+                            music.stop();
                         setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                         break;
                     case 2:
                         selectPlayerColorsMenu();
+                        setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                         break;
                     case 3:
                         selectFontMenu();
+                        setSettingsMenuEntries(entries, myFont, selection, myTick, checkBox);
                         break;
                     default:
-                        Meniusetup();
+                        saveSettings();
+                        return;
                     }
                 }
                 break;
@@ -785,7 +825,7 @@ void setSelectPlayerColorsMenu(Text entries[], RectangleShape colorOptions[][3],
     entries[3].setString("Back");
 
     // choose font and assign it
-    font.loadFromFile("Assets" pathSeparator "Fonts" pathSeparator "Roboto-Italic.ttf");
+    font.loadFromFile(fontPath);
 
     // set font and character size for all text
     for(int i = 0; i < 4; i++){
@@ -840,7 +880,7 @@ void drawColors(RectangleShape colorOptions[][3], bool player, Text title){
 }
 
 void selectPlayerColorsMenu(){
-    window.create(VideoMode(600, 800), "Bridg-It");
+
     Font font;
     Text entries[4];
     RectangleShape colorOptions[3][3];
@@ -850,18 +890,13 @@ void selectPlayerColorsMenu(){
         while(window.pollEvent(event)){
             switch(event.type){
             case Event::Closed:
-                window.close();
-                settingsMenu();
-                break;
+                return;
             case Event::KeyReleased:
                 switch(event.key.code){
                 case Keyboard::Enter:
-                    window.close();
-                    settingsMenu();
-                    break;
+                    return;
                 case Keyboard::Escape:
-                    window.close();
-                    settingsMenu();
+                    return;
                 }
                 break;
             case Event::Resized:
@@ -877,6 +912,8 @@ void selectPlayerColorsMenu(){
             }
             case Event::MouseButtonPressed:
                 pickColor(event.mouseButton, colorOptions, entries);
+                if(event.mouseButton.y > entries[3].getPosition().y)
+                    return;
                 setSelectPlayerColorsMenu(entries, colorOptions, font);
             }
         }
@@ -904,11 +941,110 @@ void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[
                 player2Color = colorOptions[int((mousebutton.y - 2 * entries[0].getGlobalBounds().height) / colorOptions[0][0].getSize().y)][int((mousebutton.x - window.getSize().x / 2) / colorOptions[0][0].getSize().x)].getFillColor();
             }
         }
-        if(mousebutton.y > entries[3].getPosition().y)
-            settingsMenu();
     }
+}
+
+void setSelectFontMenuEntries(string fonts[], Text entries[], int numOfFonts, int selection, Font &font, View &titleView, View &fontsView){
+
+
+
+
+    // set the title's properties
+    entries[0].setString("Choose font");
+    entries[0].setStyle(Text::Bold | Text::Underlined);
+    entries[0].setCharacterSize(textSize);
+    entries[0].setFont(font);
+    entries[0].setPosition((window.getSize().x - entries[0].getGlobalBounds().width) / 2, window.getSize().y / 2 - entries[0].getGlobalBounds().height);
+    entries[0].setFillColor(player2Color);
+
+    // just for safety
+    Vector2<float> sz(window.getSize().x, numOfFonts * 3 * entries[0].getGlobalBounds().height);
+    backGround.setSize(sz);
+
+    // set the fonts
+    for(int i = 1; i <= numOfFonts; i++){
+        entries[i].setCharacterSize(textSize);
+        entries[i].setString(fonts[i - 1]);
+        entries[i].setFont(font);
+        entries[i].setPosition((window.getSize().x - entries[i].getGlobalBounds().width) / 2, i * entries[0].getGlobalBounds().height * 2);
+        entries[i].setFillColor(player2Color);
+    }
+    entries[selection].setFillColor(player1Color);
+
+    // finally let's set the views
+    titleView.setViewport(FloatRect(0.f, 0.f, 1.f, 2 * entries[0].getGlobalBounds().height / window.getSize().y));
+    titleView.setSize(window.getSize().x, 2 * entries[0].getGlobalBounds().height);
+    titleView.setCenter(window.getSize().x / 2, window.getSize().y / 2);
+    fontsView.setViewport(FloatRect(0.f, 2 * entries[0].getGlobalBounds().height / window.getSize().y, 1.0f, (window.getSize().y - 2 * entries[0].getGlobalBounds().height / window.getSize().y) / window.getSize().y));
+    fontsView.setSize(window.getSize().x, window.getSize().y - 2 * entries[0].getGlobalBounds().height);
+    fontsView.setCenter(window.getSize().x / 2, window.getSize().y / 2 + entries[0].getGlobalBounds().height);
+    // well that took a lot to figure out :(((
+
 }
 
 void selectFontMenu(){
 
+    // since we'll do a scroll and I want the title to stand out, we'll need separate views
+    View titleView, fontsView;
+
+    // load font names
+    int numOfFonts = getNumberOfFonts(), selection = 1;
+    string fonts[numOfFonts];
+    setFonts(fonts, numOfFonts);
+    Font font;
+    font.loadFromFile(fontPath);
+
+    // make text entries
+    Text entries[numOfFonts + 1];
+    setSelectFontMenuEntries(fonts, entries, numOfFonts, selection, font, titleView, fontsView);
+
+    while(window.isOpen()){
+        Event event;
+
+        while(window.pollEvent(event)){
+            switch(event.type){
+            case Event::Closed:
+                return;
+            case Event::Resized:
+                setSelectFontMenuEntries(fonts, entries, numOfFonts, selection, font, titleView, fontsView);
+                break;
+            case Event::KeyReleased:
+                switch(event.key.code){
+                case Keyboard::Up:
+                    moveUp(selection, entries);
+                    if(fontsView.getCenter().y > window.getSize().y / 2 + 2 * entries[0].getGlobalBounds().height)
+                        fontsView.move(0.f, -2 * entries[0].getGlobalBounds().height);
+                    else
+                        fontsView.setCenter(window.getSize().x / 2, window.getSize().y / 2);
+                    break;
+                case Keyboard::Down:
+                    moveDown(selection, entries, numOfFonts + 1);
+                    if(fontsView.getCenter().y < (numOfFonts - 1) * entries[0].getGlobalBounds().height * 2){
+                        fontsView.move(0.f, 2 * entries[0].getGlobalBounds().height);
+                    }
+                    else{
+                        fontsView.setCenter(window.getSize().x / 2, 2 * entries[0].getGlobalBounds().height * numOfFonts);
+                    }
+                    break;
+                case Keyboard::Enter:
+                    fontPath = "Assets" pathSeparator "Fonts" pathSeparator;
+                    fontPath = fontPath + entries[selection].getString();
+                    return;
+                case Keyboard::Escape:
+                    return;
+                }
+            }
+        }
+        window.clear();
+        window.setView(fontsView);
+        window.draw(backGround);
+        for(int i = 1; i <= numOfFonts; i++){
+            window.draw(entries[i]);
+        }
+        window.setView(titleView);
+        window.draw(backGround);
+        window.draw(entries[0]);
+        window.display();
+        //fontsView.move(0.f, 0.05f);
+    }
 }
