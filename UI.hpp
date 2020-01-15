@@ -14,7 +14,7 @@ void startGame();
 
 void loadBoard();
 
-void Meniusetup();
+void mainMenu();
 
 void centerscreen(RenderWindow &meniu);
 
@@ -52,6 +52,4 @@ void pickColor(Event::MouseButtonEvent mousebutton, RectangleShape colorOptions[
 
 void resetBackGround();
 
-void easyMode();
-
-void mediumMode();
+void PCMode();

@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="AI.cpp" />
+		<Unit filename="AI.hpp" />
 		<Unit filename="Assets/Fonts/Roboto-Black.ttf" />
 		<Unit filename="Assets/Fonts/Roboto-BlackItalic.ttf" />
 		<Unit filename="Assets/Fonts/Roboto-Bold.ttf" />

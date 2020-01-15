@@ -9,7 +9,7 @@ using namespace sf;
 int main(){
 
     setPrerequisites();
-    Meniusetup();
+    mainMenu();
 
 
     return 0;

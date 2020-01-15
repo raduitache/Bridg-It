@@ -282,6 +282,8 @@ void setPrerequisites(){
     // and we'll be closing the stream now
     f.close();
 
+    ticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "ticked.png");
+    unticked.loadFromFile("Assets" pathSeparator "Images" pathSeparator "unticked.png");
     music.openFromFile("Assets" pathSeparator "Sounds" pathSeparator "backGroundMusic.ogg");
     clickSoundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "pop.flac");
     winSoundBuffer.loadFromFile("Assets" pathSeparator "Sounds" pathSeparator "win.wav");
